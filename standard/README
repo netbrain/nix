@@ -1,0 +1,14 @@
+# Setup NIX installation
+TBD
+
+```
+mkdir /tmp/nix
+cd /tmp/nix
+nix flake init -t github:netbrain/nix#standard
+nixos-generate-config --root ./nixos
+sudo nixos-install --flake .#netwrk
+home-manager --flake .#netbrain@netwrk switch
+passwd netbrain
+reboot
+
+

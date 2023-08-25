@@ -48,44 +48,25 @@
   };
 
   # Add stuff for your user as you see fit:
+  programs.neovim.enable = true;
   home.packages = with pkgs; [ 
+    steam 
     tree
     curl
-    stow
   ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
-  };
+    EDITOR = "nvim"
+  }
 
-  # Enable home-manager
+  # Enable home-manager and git
   programs.home-manager.enable = true;
-
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-  };
-  programs.dircolors.enable = true;
+  programs.dircolors.enable = true
   programs.jq.enable = true;
-  programs.git = {
-    enable = true;
-    delta.enable = true;
-    userName = "Kim Eik";
-    userEmail = "kim@heldig.org";
-    aliases = {
-      co = "checkout";
-    };
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    withNodeJs = true;
-    withPython3 = true;
-  };
+  programs.git.enable = true;
+  programs.git.delta.enable = true;
+  programs.git.userName = "Kim Eik";
+  programs.git.userEmail = "kim@heldig.org";
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
