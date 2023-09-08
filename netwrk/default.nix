@@ -4,5 +4,7 @@
     ./nvidia.nix
     ./kanshi.nix
     ./powermgmt.nix
+    ./vfio.nix
+    ./wayland.nix
   ];
 }

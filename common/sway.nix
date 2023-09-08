@@ -13,7 +13,7 @@
           xkb_layout = "no";
         };
       };
-      keybindings = 
+      keybindings =
       let
         mod = config.wayland.windowManager.sway.config.modifier;
         grim = "${pkgs.grim}/bin/grim";
@@ -44,7 +44,7 @@
           #{ command = "inhibit_idle visible"; criteria = { title = "(Blue Jeans)|(Meet)|(Zoom Meeting)"; }; }
           #{ command = "inhibit_idle visible, floating enable"; criteria = { title = "(Sharing Indicator)"; }; }
         ];
-      };      
+      };
       floating.criteria = [
         { class = "Pavucontrol"; }
       ];
@@ -55,19 +55,19 @@
       startup = [
         { command = "mako"; }
         { command = "systemctl --user restart waybar"; always = true; }
-        { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY DBUS_SESSION_BUS_ADDRESS SWAYSOCK XDG_SESSION_TYPE XDG_SESSION_DESKTOP XDG_CURRENT_DESKTOP NIXOS_OZONE_WL"; } #workaround
-        { 
+#        { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY DBUS_SESSION_BUS_ADDRESS SWAYSOCK XDG_SESSION_TYPE XDG_SESSION_DESKTOP XDG_CURRENT_DESKTOP NIXOS_OZONE_WL"; } #workaround
+        {
           command = ''swayidle -w \
                     timeout 300 'swaylock --daemonize --color 3c3836' \
                     timeout 600 'swaymsg "output * dpms off"' \
                         resume 'swaymsg "output * dpms on"' \
                     before-sleep 'swaylock --daemonize --color 3c3836'
-                  ''; 
+                  '';
         }
         { command = "alacritty"; }
-        { command = "google-chrome-stable"; }
-        { command = "slack --logLevel=error"; }  
-        { command = "teams"; }
+#        { command = "google-chrome-stable"; }
+#        { command = "slack --logLevel=error"; }
+#        { command = "teams"; }
         { command = "nm-applet --indicator"; always = true; }
       ];
 #      output = {

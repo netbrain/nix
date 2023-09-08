@@ -1,11 +1,15 @@
 { pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./cli.nix
+    ./libvirt.nix
+    ./bluetooth.nix
   ];
 
   sound.enable = true;
+  hardware.enableAllFirmware  = true;
+
   services.xserver.layout = "no";
   services.pipewire = {
     enable = true;

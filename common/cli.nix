@@ -46,6 +46,7 @@
     systemPackages = with pkgs; [
       vim
       nix-index
+      pciutils
     ];
   };
 

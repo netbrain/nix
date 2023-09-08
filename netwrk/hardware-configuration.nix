@@ -10,9 +10,12 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.consoleMode = "1";
+  #boot.extraModprobeConfig = ''
+  #  options iwlwifi power_save=1 disable_11ax=1
+  #'';
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/be02038c-1b30-4a23-9af1-87c5b75aaa12";

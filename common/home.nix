@@ -24,7 +24,7 @@
     stateVersion = "23.05";
   };
 
-  home.packages = with pkgs; [ 
+  home.packages = with pkgs; [
     tree
     curl
     stow
@@ -39,6 +39,7 @@
     jetbrains.goland
     slack
     teams
+    remmina
   ];
 
   home.sessionVariables = {
