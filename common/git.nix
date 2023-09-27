@@ -1,12 +1,9 @@
 {
   programs.git = {
     enable = true;
-    delta = {
+    difftastic = {
       enable = true;
-      options = {
-        side-by-side = true;
-        syntax-theme = "none";
-      };
+      background = "dark";
     };
     userName = "Kim Eik";
     userEmail = "kim@heldig.org";
@@ -14,7 +11,8 @@
       co = "checkout";
     };
     extraConfig = {
-      url."https://github.com/".insteadOf = [ "gh:" "github:" ];
+      url."git@github.com:".insteadOf = [ "gh:" "github:" "https://github.com" ];
+      push.autoSetupRemote = true;
     };
   };
 }

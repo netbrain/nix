@@ -24,7 +24,7 @@
     stateVersion = "23.05";
   };
 
-  home.packages = with pkgs; [
+   home.packages = with pkgs; [
     tree
     curl
     stow
@@ -40,22 +40,40 @@
     slack
     teams
     remmina
+    spotify
   ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    NIXPKGS_ALLOW_UNFREE = 1;
   };
 
   programs.htop.enable = true;
   programs.home-manager.enable = true;
 
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      eval "$(direnv hook bash)"
+      '';
+    shellAliases = {
+      ".." = "cd .." ;
+      nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
+      ngc = "sudo sh -c 'nix-env --delete-generations old && nix-store --gc && nix-collect-garbage -d'";
+    };
+  };
+
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
+    nix-direnv.enable = true;
   };
 
   programs.dircolors.enable = true;
   programs.jq.enable = true;
+
+  programs.starship.enable = true;
+  programs.starship.settings.add_newline = true;
 
   programs.neovim = {
     enable = true;

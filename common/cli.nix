@@ -3,11 +3,13 @@
 {
   imports = [
     ./users.nix
+    ./sudo.nix
     ./docker.nix
     ./greetd.nix
     ./home-manager.nix
   ];
 
+  nix.settings.trusted-users = [ "root" "netbrain" ];
   nixpkgs.config.allowUnfree = true;
   nix.extraOptions = "experimental-features = nix-command flakes";
 

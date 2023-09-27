@@ -1,10 +1,11 @@
 { config, pks, ... }:
 let
-  home-manager = builtins.fetchTarball {
-    url = "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
-    sha256 = "17bhps716gn3g49n959ks9ympmg5808l3c5c06fx88b6d2qax57y";
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/nix-community/home-manager.git";
+    ref = "release-23.05";
+    rev = "07682fff75d41f18327a871088d20af2710d4744";
   };
-in 
+in
 {
   imports = [ (import "${home-manager}/nixos") ];
 }
