@@ -23,6 +23,8 @@
       #"vfio-pci.ids=10de:1f95"
       "blacklist=nouveau"
     ];
+
+    extraModprobeConfig = "options kvm_intel nested=1";
  };
 
   hardware.opengl.enable = true;
