@@ -19,6 +19,8 @@
     #useXkbConfig = true; # use xkbOptions in tty.
   };
 
+  services.tailscale.enable = true;
+
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
@@ -49,6 +51,9 @@
       vim
       nix-index
       pciutils
+      nmap
+      netcat
+      tailscale
     ];
   };
 
