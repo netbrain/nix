@@ -87,5 +87,7 @@
 
   programs.java.enable = true;
 
+  programs.lf.enable = true;
+
   systemd.user.startServices = "sd-switch";
 }

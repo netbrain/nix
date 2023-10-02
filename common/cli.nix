@@ -57,7 +57,10 @@
     ];
   };
 
-  networking.enableIPv6 = false;
+  networking = {
+    enableIPv6 = false;
+    firewall.enable = false;
+  };
 
   system.stateVersion = "23.05";
 }

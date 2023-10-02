@@ -14,11 +14,14 @@
     onShutdown = "shutdown";
   };
 
+  systemd.services.libvirtd.path = [ pkgs.mdevctl ];
+
   # Virt-manager
   programs.dconf.enable = true;
   environment.systemPackages = with pkgs; [
     virt-manager
     win-virtio
+    virtiofsd
     looking-glass-client
     swtpm
   ];

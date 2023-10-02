@@ -37,6 +37,7 @@
       playerctl
       networkmanagerapplet
       networkmanager-sstp
+      discord
     ];
   };
 
