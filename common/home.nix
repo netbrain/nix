@@ -5,7 +5,6 @@
     ./git.nix
     ./sway.nix
     ./waybar.nix
-    ./alacritty.nix
     ./gtk.nix
     ./mako.nix
     ./neovim.nix
@@ -24,7 +23,7 @@
     stateVersion = "23.05";
   };
 
-   home.packages = with pkgs; [
+  home.packages = with pkgs; [
     tree
     curl
     stow
@@ -54,8 +53,8 @@
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-      eval "$(direnv hook bash)"
-      '';
+    eval "$(direnv hook bash)"
+    '';
     shellAliases = {
       ".." = "cd .." ;
       nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
@@ -69,6 +68,7 @@
     nix-direnv.enable = true;
   };
 
+  programs.foot = import ./foot.nix;
   programs.dircolors.enable = true;
   programs.jq.enable = true;
 

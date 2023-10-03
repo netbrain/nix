@@ -27,7 +27,6 @@
       mako
       slurp
       grim
-      alacritty
       tofi
       wlr-randr
       wdisplays

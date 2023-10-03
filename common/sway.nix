@@ -26,7 +26,7 @@
           "${mod}+b" = "scratchpad show";
           "--release Print" = ''exec ${grim} -g \"$(${slurp})" - | wl-copy'';
         };
-        terminal = "alacritty";
+        terminal = "foot";
       #menu = "wofi --show run | xargs waymsg exec --";
       menu = "tofi-drun --drun-launch=true";
       modifier = "Mod4";
@@ -64,7 +64,7 @@
   before-sleep 'swaylock --daemonize --color 3c3836'
   '';
 }
-{ command = "alacritty"; }
+{ command = "foot"; }
 #        { command = "google-chrome-stable"; }
 #        { command = "slack --logLevel=error"; }
 #        { command = "teams"; }
