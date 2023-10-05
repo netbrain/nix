@@ -21,6 +21,7 @@
             criteria = "DP-3";
             status = "enable";
             scale = 1.0;
+            mode = "3840x2160@60";
           }
         ];
       };

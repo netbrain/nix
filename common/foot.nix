@@ -3,6 +3,7 @@
   settings = {
 
     main = {
+      font = "Inconsolata:size=12";
       dpi-aware = "yes";
     };
 
