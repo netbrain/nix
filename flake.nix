@@ -66,6 +66,15 @@
             { networking.hostName = "netbox"; }
           ];
         };
+        wsl = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          system = "x86_64-linux";
+          modules = [
+            ./common/cli.nix
+            ./wsl/configuration.nix
+            { networking.hostName = "wsl-nixos"; }
+          ];
+        };
       };
     };
 }
