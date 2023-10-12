@@ -49,6 +49,8 @@
     };
     systemPackages = with pkgs; [
       vim
+      wget
+      curl
       nix-index
       pciutils
       nmap
