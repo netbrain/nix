@@ -25,6 +25,7 @@
           "${mod}+Shift+b" = "move scratchpad";
           "${mod}+b" = "scratchpad show";
           "--release Print" = ''exec ${grim} -g \"$(${slurp})" - | wl-copy'';
+          "${mod}+l" = "exec swaylock --color 3c3836";
         };
         terminal = "foot";
       #menu = "wofi --show run | xargs waymsg exec --";
@@ -56,14 +57,15 @@
         { command = "mako"; }
         { command = "systemctl --user restart waybar"; always = true; }
 #        { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY DBUS_SESSION_BUS_ADDRESS SWAYSOCK XDG_SESSION_TYPE XDG_SESSION_DESKTOP XDG_CURRENT_DESKTOP NIXOS_OZONE_WL"; } #workaround
-{
-  command = ''swayidle -w \
-  timeout 300 'swaylock --daemonize --color 3c3836' \
-  timeout 600 'swaymsg "output * dpms off"' \
-  resume 'swaymsg "output * dpms on"' \
-  before-sleep 'swaylock --daemonize --color 3c3836'
-  '';
-}
+#{
+#  command = ''swayidle -w \
+#  timeout 300 'swaylock --daemonize --color 3c3836' \
+#  timeout 600 'swaymsg "output * dpms off"' \
+#  resume 'swaymsg "output * dpms on"' \
+#  before-sleep 'swaylock --daemonize --color 3c3836'
+#  '';
+#}
+
 { command = "foot"; }
 #        { command = "google-chrome-stable"; }
 #        { command = "slack --logLevel=error"; }
