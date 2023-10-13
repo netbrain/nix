@@ -40,6 +40,7 @@
     teams
     remmina
     spotify
+    element-desktop
   ];
 
   home.sessionVariables = {
