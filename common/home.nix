@@ -8,6 +8,7 @@
     ./gtk.nix
     ./mako.nix
     ./neovim.nix
+    ./syncthing.nix
   ];
 
   nixpkgs = {
@@ -36,6 +37,7 @@
     jetbrains.datagrip
     jetbrains.idea-ultimate
     jetbrains.goland
+    jetbrains.gateway
     slack
     teams
     remmina
