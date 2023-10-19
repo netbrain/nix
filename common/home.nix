@@ -38,8 +38,9 @@
     jetbrains.idea-ultimate
     jetbrains.goland
     jetbrains.gateway
+    jetbrains.rider
+    jetbrains.webstorm
     slack
-    teams
     remmina
     spotify
     element-desktop
@@ -57,11 +58,19 @@
     enable = true;
     bashrcExtra = ''
     eval "$(direnv hook bash)"
+    inbg(){
+      nohup "$@" &>/dev/null & disown
+    }
     '';
     shellAliases = {
       ".." = "cd .." ;
       nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
       ngc = "sudo sh -c 'nix-env --delete-generations old && nix-store --gc && nix-collect-garbage -d'";
+      goland = "inbg goland";
+      rider = "inbg rider";
+      webstorm = "inbg webstorm";
+      idea-ultimate = "inbg idea-ultimate";
+      gateway = "inbg gateway";
     };
   };
 

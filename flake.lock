@@ -15,29 +15,33 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
       "locked": {
-        "lastModified": 1692986144,
-        "narHash": "sha256-M4VFpy7Av9j+33HF5nIGm0k2+DXXW4qSSKdidIKg5jY=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "74e5bdc5478ebbe7ba5849f0d765f92757bb9dbf",
+        "lastModified": 1697611555,
+        "narHash": "sha256-8nYMduRQfGSQJr2cDMyodsuGlRcJAy0Ko8K4KkjurP8=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "05649393ac1f34980a5cf6a6e89de77626c9182b",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "nixos-23.05",
-        "repo": "nixpkgs",
+        "owner": "nix-community",
+        "repo": "home-manager",
         "type": "github"
       }
     },
-    "nixpkgs-unstable": {
+    "nixpkgs": {
       "locked": {
-        "lastModified": 1693003285,
-        "narHash": "sha256-5nm4yrEHKupjn62MibENtfqlP6pWcRTuSKrMiH9bLkc=",
+        "lastModified": 1697456312,
+        "narHash": "sha256-roiSnrqb5r+ehnKCauPLugoU8S36KgmWraHgRqVYndo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5690c4271f2998c304a45c91a0aeb8fb69feaea7",
+        "rev": "ca012a02bf8327be9e488546faecae5e05d7d749",
         "type": "github"
       },
       "original": {
@@ -66,8 +70,8 @@
     "root": {
       "inputs": {
         "hardware": "hardware",
+        "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable",
         "nvidia-vgpu": "nvidia-vgpu"
       }
     }

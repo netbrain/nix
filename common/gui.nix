@@ -37,14 +37,16 @@
       networkmanagerapplet
       networkmanager-sstp
       discord
+      waypipe
     ];
   };
 
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
   programs.nm-applet.enable = true;
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji

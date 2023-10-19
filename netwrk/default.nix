@@ -6,5 +6,6 @@
     ./powermgmt.nix
     ./vfio.nix
     ./wayland.nix
+    ./libvirt.nix
   ];
 }

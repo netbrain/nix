@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, home-manager, ... }:
 
 {
   imports = [
@@ -6,7 +6,6 @@
     ./sudo.nix
     ./docker.nix
     ./greetd.nix
-    ./home-manager.nix
   ];
 
   nix.settings.trusted-users = [ "root" "netbrain" ];

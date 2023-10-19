@@ -3,7 +3,7 @@
     syncthing = {
       enable = true;
       tray =  {
-        enable = true;
+        enable = false;
       };
       #user = "netbrain";
       #dataDir = "/home/netbrain/sync";    # Default folder for new synced folders
