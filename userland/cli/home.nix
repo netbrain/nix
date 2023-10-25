@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+
+  imports = [
+    ./git.nix
+    ./neovim.nix
+    ./syncthing.nix
+   ];
+
+
   nixpkgs = {
     config = {
       allowUnfree = true;

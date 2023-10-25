@@ -1,6 +1,15 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ../cli/home.nix
+    #./alacritty.nix
+    ./foot.nix
+    ./mako.nix
+    ./sway.nix
+    ./waybar.nix
+    ./gtk.nix
+  ];
 
   home.packages = with pkgs; [
     google-chrome
@@ -15,5 +24,5 @@
     spotify
     element-desktop
   ];
- 
 }
+
