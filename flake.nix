@@ -17,8 +17,9 @@
           specialArgs = { inherit inputs; };
           system = "x86_64-linux";
           modules = [
-            ./common/gui.nix
-            ./qemu/configuration.nix
+            ./system/gui/default.nix
+            ./userland/gui/default.nix
+            ./hosts/qemu/configuration.nix
             { networking.hostName = "netqemu"; }
           ];
         };
@@ -29,9 +30,11 @@
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager-users.netbrain = import ./userland/cli/home.nix;
             }
-            ./common/gui.nix
-            ./netwrk/default.nix
+            ./system/gui/default.nix
+            ./userland/gui/default.nix
+            ./hosts/netwrk/default.nix
             { networking.hostName = "netwrk"; }
           ];
         };
@@ -39,8 +42,9 @@
           specialArgs = { inherit inputs; };
           system = "x86_64-linux";
           modules = [
-            ./common/gui.nix
-            ./netwrk/configuration.nix
+            ./system/gui/default.nix
+            ./userland/gui/default.nix
+            ./hosts/netwrk/configuration.nix
             { networking.hostName = "netbox"; }
           ];
         };
@@ -48,11 +52,19 @@
           specialArgs = { inherit inputs; };
           system = "x86_64-linux";
           modules = [
-            ./common/cli.nix
-            ./wsl/configuration.nix
+            ./system/cli/default.nix
+            ./hosts/wsl/configuration.nix
             { networking.hostName = "wsl-nixos"; }
           ];
         };
       };
+
+      # standalone home-manager configuration
+      homeConfigurations.netbrain = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./userland/cli/default.nix
+         ];
+      };      
     };
 }

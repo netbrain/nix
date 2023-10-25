@@ -1,5 +1,6 @@
+# Setup NixOS
+
 ```
-# Setup NIX
 sudo -s
 loadkeys no-latin1
 
@@ -46,3 +47,11 @@ boot.initrd.luks.devices = {
 # Install
 nixos-install --flake .#<machine-name> --no-root-passwd
 ```
+
+# Setup Nix & Home Manager standalone
+
+```
+sh <(curl -L https://nixos.org/nix/install) --no-daemon
+nix run home-manager/master -- --flake github:netbrain/nix switch
+# or git clone and then the above with --flake .
+````
