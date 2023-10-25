@@ -1,4 +1,4 @@
-{...}:
+{ pkgs, ... }:
 {
 
   boot = {
@@ -23,6 +23,17 @@
       #"vfio-pci.ids=10de:1f95"
       "blacklist=nouveau"
     ];
+
+    kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_1.override {
+      argsOverride = rec {
+        src = pkgs.fetchurl {
+          url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+          sha256 = "k9WLavAHpfRN0mgx/zEHB96xq5OAxRNqU0KH6z/d/Ks=";
+        };
+        version = "6.1.47";
+        modDirVersion = "6.1.47";
+      };
+    });
 
     extraModprobeConfig = "options kvm_intel nested=1";
  };

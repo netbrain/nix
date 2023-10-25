@@ -9,6 +9,7 @@
     ./mako.nix
     ./neovim.nix
     ./syncthing.nix
+    ./helix.nix
   ];
 
   nixpkgs = {

@@ -6,6 +6,7 @@
     ./sudo.nix
     ./docker.nix
     ./greetd.nix
+    ./golang.nix
   ];
 
   nix.settings.trusted-users = [ "root" "netbrain" ];
