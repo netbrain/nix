@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./cli.nix
-    ./libvirt.nix
-    ./bluetooth.nix
-  ];
 
   sound.enable = true;
   hardware.enableAllFirmware  = true;

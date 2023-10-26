@@ -1,15 +1,13 @@
 { pkgs, ... }:
 
 {
+
   imports = [
     ./git.nix
-    ./sway.nix
-    ./waybar.nix
-    ./gtk.nix
-    ./mako.nix
     ./neovim.nix
     ./syncthing.nix
     ./helix.nix
+    ./golang.nix
   ];
 
   nixpkgs = {
@@ -27,6 +25,10 @@
 
   home.packages = with pkgs; [
     tree
+    nmap
+    wget
+    netcat
+    pciutils
     curl
     stow
     gcc
@@ -34,17 +36,7 @@
     iperf
     xdg-utils
     unzip
-    google-chrome
-    jetbrains.datagrip
-    jetbrains.idea-ultimate
-    jetbrains.goland
-    jetbrains.gateway
-    jetbrains.rider
-    jetbrains.webstorm
-    slack
-    remmina
-    spotify
-    element-desktop
+    tailscale
   ];
 
   home.sessionVariables = {
@@ -81,7 +73,6 @@
     nix-direnv.enable = true;
   };
 
-  programs.foot = import ./foot.nix;
   programs.dircolors.enable = true;
   programs.jq.enable = true;
 
