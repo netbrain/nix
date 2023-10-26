@@ -6,8 +6,9 @@
     ./git.nix
     ./neovim.nix
     ./syncthing.nix
-   ];
-
+    ./helix.nix
+    ./golang.nix
+  ];
 
   nixpkgs = {
     config = {
