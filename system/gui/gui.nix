@@ -31,6 +31,7 @@
       playerctl
       networkmanagerapplet
       networkmanager-sstp
+      networkmanager-openvpn
       discord
       waypipe
     ];

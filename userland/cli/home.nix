@@ -4,7 +4,7 @@
 
   imports = [
     ./git.nix
-    ./neovim.nix
+#    ./neovim.nix
     ./syncthing.nix
     ./helix.nix
     ./golang.nix
@@ -37,11 +37,13 @@
     xdg-utils
     unzip
     tailscale
+    bitwarden-cli
   ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "hx";
     NIXPKGS_ALLOW_UNFREE = 1;
+    PATH = "$PATH:$HOME/.local/bin";
   };
 
   programs.htop.enable = true;
@@ -51,11 +53,14 @@
     enable = true;
     bashrcExtra = ''
     eval "$(direnv hook bash)"
+    
     inbg(){
       nohup "$@" &>/dev/null & disown
     }
     '';
     shellAliases = {
+      vi = "hx";
+      vim = "hx";
       ".." = "cd .." ;
       nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
       ngc = "sudo sh -c 'nix-env --delete-generations old && nix-store --gc && nix-collect-garbage -d'";
@@ -67,30 +72,24 @@
     };
   };
 
+  # Unclutter your .profile
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
 
-  programs.dircolors.enable = true;
+  # CLI JSON processor
   programs.jq.enable = true;
 
+  # Starship
   programs.starship.enable = true;
   programs.starship.settings.add_newline = true;
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    withNodeJs = true;
-    withPython3 = true;
-  };
-
+  # Java
   programs.java.enable = true;
 
+  # Terminal file manager
   programs.lf.enable = true;
 
   systemd.user.startServices = "sd-switch";

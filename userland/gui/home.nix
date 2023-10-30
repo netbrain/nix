@@ -9,6 +9,7 @@
     ./sway.nix
     ./waybar.nix
     ./gtk.nix
+    ./zwift.nix
   ];
 
   home.packages = with pkgs; [

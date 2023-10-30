@@ -30,6 +30,9 @@
         terminal = "foot";
       #menu = "wofi --show run | xargs waymsg exec --";
       menu = "tofi-drun --drun-launch=true";
+      focus = {
+        followMouse = false;
+      };
       modifier = "Mod4";
       floating = {
         criteria = [
@@ -58,8 +61,9 @@
           }
           # { command = "floating enable"; criteria = { app_id = "gsimplecal"; }; }
           #{ command = "floating enable"; criteria = { app_id = "firefox-nightly"; title = "About Firefox Nightly"; }; }
-          #{ command = "move container to workspace 2"; criteria = { class = "Slack"; }; }
-          #{ command = "move container to workspace 2"; criteria = { class = "Microsoft Teams - Preview"; }; }
+          { command = "move container to workspace 9"; criteria = { class = "Slack"; }; }
+          { command = "move container to workspace 9"; criteria = { title = "Chat | Microsoft Teams classic"; }; }
+          #{ command = "move container to workspace 9"; criteria = { class = "Microsoft Teams - Preview"; }; }
           #{ command = "move container to workspace 3"; criteria = { class = "Google-chrome"; }; }
           #{ command = "floating enable, resize set width 600px height 800px"; criteria = { title = "Save File"; }; }
           # browser zoom|meet|bluejeans
@@ -83,10 +87,10 @@
 #  before-sleep 'swaylock --daemonize --color 3c3836'
 #  '';
 #}
-
+{ command = "google-chrome-stable --app='https://teams.microsoft.com'"; }
 { command = "foot"; }
 #        { command = "google-chrome-stable"; }
-#        { command = "slack --logLevel=error"; }
+{ command = "slack --logLevel=error"; }
 #        { command = "teams"; }
 { command = "nm-applet --indicator"; always = true; }
 { command = "blueman-applet"; always = true; }
@@ -97,6 +101,19 @@
 #          mode = "2560x1600@59.987Hz";
 #        };
 #      };
+
     };
+    
+    extraConfig = ''
+      for_window {
+        [urgent="latest"] focus
+        [window_role="pop-up"] floating enable
+        [window_role="bubble"] floating enable
+        [window_role="dialog"] floating enable
+        [window_type="dialog"] floating enable
+        [title="(?:Open|Save) (?:File|Folder|As)"] floating enable, resize set width 1030 height 710
+      }
+    '';
+    
   };
 }
