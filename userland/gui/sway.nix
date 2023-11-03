@@ -31,10 +31,31 @@
       #menu = "wofi --show run | xargs waymsg exec --";
       menu = "tofi-drun --drun-launch=true";
       modifier = "Mod4";
+      floating = {
+        criteria = [
+          { window_role = "pop-up"; }
+          { window_role = "bubble"; }
+          { window_role = "dialog"; }
+          { window_type = "dialog"; }
+          { app_id = "pavucontrol"; }
+        ];
+      };
       window = {
         titlebar = false;
         hideEdgeBorders = "smart";
         commands = [
+          {
+            command = "focus";
+            criteria = {
+              urgent = "latest";
+            };
+          }
+          {
+            command = "floating enable, resize set width 1030 height 710";
+            criteria = {
+              title = "(?:Open|Save) (?:File|Folder|As)";
+            };
+          }
           # { command = "floating enable"; criteria = { app_id = "gsimplecal"; }; }
           #{ command = "floating enable"; criteria = { app_id = "firefox-nightly"; title = "About Firefox Nightly"; }; }
           #{ command = "move container to workspace 2"; criteria = { class = "Slack"; }; }
@@ -42,14 +63,11 @@
           #{ command = "move container to workspace 3"; criteria = { class = "Google-chrome"; }; }
           #{ command = "floating enable, resize set width 600px height 800px"; criteria = { title = "Save File"; }; }
           # browser zoom|meet|bluejeans
-          { command = "inhibit_idle visible"; criteria = { title = "(Blue Jeans)|(Meet)|(Zoom Meeting)"; }; }
+          #{ command = "inhibit_idle visible"; criteria = { title = "(Blue Jeans)|(Meet)|(Zoom Meeting)"; }; }
           #{ command = "inhibit_idle visible, floating enable"; criteria = { title = "(Sharing Indicator)"; }; }
         ];
       };
-      floating.criteria = [
-        { app_id = "pavucontrol"; }
-      ];
-      gaps = {
+     gaps = {
         inner = 5;
         outer = 5;
       };
