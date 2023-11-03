@@ -103,17 +103,5 @@
 #      };
 
     };
-    
-    extraConfig = ''
-      for_window {
-        [urgent="latest"] focus
-        [window_role="pop-up"] floating enable
-        [window_role="bubble"] floating enable
-        [window_role="dialog"] floating enable
-        [window_type="dialog"] floating enable
-        [title="(?:Open|Save) (?:File|Folder|As)"] floating enable, resize set width 1030 height 710
-      }
-    '';
-    
   };
 }
