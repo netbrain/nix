@@ -54,4 +54,11 @@ nixos-install --flake .#<machine-name> --no-root-passwd
 sh <(curl -L https://nixos.org/nix/install) --no-daemon
 nix run home-manager/master -- --flake github:netbrain/nix switch
 # or git clone and then the above with --flake .
-````
+```
+
+# Adding secrets
+
+```
+sops ./secrets/secrets.yaml
+
+```
