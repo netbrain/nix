@@ -7,6 +7,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hardware.url = "github:nixos/nixos-hardware";
     nvidia-vgpu.url = "github:physics-enthusiast/nixos-nvidia-vgpu/525.125";
+    sops-nix.url = "github:mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {

@@ -8,6 +8,7 @@
     ./syncthing.nix
     ./helix.nix
     ./golang.nix
+    ./maven.nix
   ];
 
   nixpkgs = {
@@ -24,6 +25,7 @@
   };
 
   home.packages = with pkgs; [
+    sops
     tree
     nmap
     wget
