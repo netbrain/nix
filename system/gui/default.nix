@@ -4,7 +4,8 @@
    ./bluetooth.nix
    ./greetd.nix
    ./gui.nix
-   ./libvirt.nix   
+   ./libvirt.nix
+   ./networkmanager.nix   
   ];
 }
 

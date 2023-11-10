@@ -10,7 +10,7 @@
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/netbrain/.config/sops/age/keys.txt";
 
-    secrets."altibox/security" = {
+    secrets."lyse/maven/security" = {
       owner = "netbrain";
     };
   };
@@ -20,7 +20,7 @@
     script = ''
       echo "
       <settingsSecurity>
-        <master>{$(cat ${config.sops.secrets."altibox/security".path})}</master>
+        <master>{$(cat ${config.sops.secrets."lyse/maven/security".path})}</master>
       </settingsSecurity>
       " > settings-security.xml
     '';

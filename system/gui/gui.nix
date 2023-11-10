@@ -29,15 +29,12 @@
       pavucontrol
       pulseaudio
       playerctl
-      networkmanagerapplet
-      networkmanager-sstp
-      networkmanager-openvpn
       discord
       waypipe
     ];
   };
 
-  networking.networkmanager.enable = true;
+
   systemd.services.NetworkManager-wait-online.enable = false;
   programs.nm-applet.enable = true;
 
