@@ -5,7 +5,8 @@
    ./greetd.nix
    ./gui.nix
    ./libvirt.nix
-   ./networkmanager.nix   
+   ./networkmanager.nix
+   ./steam.nix 
   ];
 }
 

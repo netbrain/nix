@@ -22,7 +22,7 @@
     LYSE_VPN_CA = "${config.sops.secrets."lyse/vpn/ca".path}"
     LYSE_VPN_CERT = "${config.sops.secrets."lyse/vpn/cert".path}"
     LYSE_VPN_KEY = "${config.sops.secrets."lyse/vpn/key".path}"
-    LYSE_VPN_TLS-CRYPT = "${config.sops.secrets."lyse/vpn/tls-crypt".path}"
+    LYSE_VPN_TLS_CRYPT = "${config.sops.secrets."lyse/vpn/tls-crypt".path}"
     LYSE_WIFI_LYSE-BYOD_PASSWORD = "${config.sops.placeholder."lyse/wifi/lyse-byod/password"}"
     DAVO_VPN_PASSWORD = "${config.sops.placeholder."davo/vpn/password"}"
     HOME_WIFI_NETWIFI_PASSWORD = "${config.sops.placeholder."home/wifi/netwifi/password"}"
@@ -82,7 +82,7 @@
             remote = "gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:tcp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp";
             remote-cert-tls = "server";
             reneg-seconds = "604800";
-            tls-crypt = "$LYSE_TLS-CRYPT";
+            tls-crypt = "$LYSE_VPN_TLS_CRYPT";
             tls-version-min = "1.2";
             tunnel-mtu = "1500";
             username = "kimei";

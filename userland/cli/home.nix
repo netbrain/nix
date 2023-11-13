@@ -38,6 +38,7 @@
     iperf
     xdg-utils
     unzip
+    file
     tailscale
     bitwarden-cli
   ];
@@ -71,6 +72,7 @@
       webstorm = "inbg webstorm";
       idea-ultimate = "inbg idea-ultimate";
       gateway = "inbg gateway";
+      pwd-lyse-vpn = "read -s -p 'Master password:' pwd; echo -n $(echo $pwd | bw get password 4fab525d-7b81-4421-8813-b084006afed4)$(echo $pwd | bw get totp 4fab525d-7b81-4421-8813-b084006afed4) | wl-copy";
     };
   };
 
