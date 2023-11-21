@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
-    home.file.".m2/settings.xml" = {
+    home.file."m2-settings.xml" = {
+      target = ".m2/settings.xml";
       text = ''
       <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
