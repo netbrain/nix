@@ -46,4 +46,20 @@
     ];
   };
 
+  
+  systemd.user.services."turn-off-nvidia-gpu" = {
+    description = "turns off the nivida gpu to prevent excessive power drain";
+    serviceConfig = {
+      User = "root";
+      After = "nvidia-vgpud.service";
+      ExecStart = ''
+        nvidia-smi drain -p 0000:01:00.0 -m 1
+      '';
+      ExecStop = ''
+        nvidia-smi drain -p 0000:01:00.0 -m 0
+      '';
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
 }
