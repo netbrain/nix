@@ -6,7 +6,15 @@
     users = {
       netbrain = {
         description = "Kim Eik";
-        extraGroups = [ "audio" "docker" "video" "wheel" "netbrain" "networkmanager" ];
+        extraGroups = [ 
+          "audio" 
+          "docker" 
+          "video" 
+          "wheel" 
+          "netbrain" 
+          "networkmanager" 
+          "wireshark" 
+        ];
         shell = pkgs.bash;
         home = "/home/netbrain";
         isNormalUser = true;

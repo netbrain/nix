@@ -6,7 +6,8 @@
    ./gui.nix
    ./libvirt.nix
    ./networkmanager.nix
-   ./steam.nix 
+   ./steam.nix
+   ./wireshark.nix
   ];
 }
 
