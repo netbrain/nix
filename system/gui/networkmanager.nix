@@ -23,7 +23,7 @@
     LYSE_VPN_CERT = "${config.sops.secrets."lyse/vpn/cert".path}"
     LYSE_VPN_KEY = "${config.sops.secrets."lyse/vpn/key".path}"
     LYSE_VPN_TLS_CRYPT = "${config.sops.secrets."lyse/vpn/tls-crypt".path}"
-    LYSE_WIFI_LYSE-BYOD_PASSWORD = "${config.sops.placeholder."lyse/wifi/lyse-byod/password"}"
+    LYSE_WIFI_LYSE_BYOD_PASSWORD = "${config.sops.placeholder."lyse/wifi/lyse-byod/password"}"
     DAVO_VPN_PASSWORD = "${config.sops.placeholder."davo/vpn/password"}"
     HOME_WIFI_NETWIFI_PASSWORD = "${config.sops.placeholder."home/wifi/netwifi/password"}"
   '';
@@ -47,7 +47,7 @@
           wifi-security = {
             auth-alg = "open";
             key-mgmt = "wpa-psk";
-            psk = "$LYSE_WIFI_LYSE-BYOD_PASSWORD";
+            psk = "$LYSE_WIFI_LYSE_BYOD_PASSWORD";
           };
           ipv4 = {
             method = "auto";
