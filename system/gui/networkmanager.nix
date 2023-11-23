@@ -15,6 +15,7 @@
     "lyse/vpn/key" = {};
     "lyse/vpn/tls-crypt" = {};
     "home/wifi/netwifi/password" = {};
+    "pil/wifi/h62etg/password" = {};
   };
 
   sops.templates."networkmanager".content = ''
@@ -26,6 +27,7 @@
     LYSE_WIFI_LYSE_BYOD_PASSWORD = "${config.sops.placeholder."lyse/wifi/lyse-byod/password"}"
     DAVO_VPN_PASSWORD = "${config.sops.placeholder."davo/vpn/password"}"
     HOME_WIFI_NETWIFI_PASSWORD = "${config.sops.placeholder."home/wifi/netwifi/password"}"
+    PIL_WIFI_H62ETG_PASSWORD = "${config.sops.placeholder."pil/wifi/h62etg/password"}"
   '';
 
   networking.networkmanager = {
@@ -164,6 +166,21 @@
             method = "auto";
           };
           proxy = {
+          };
+        };
+        h62etg = {
+          connection = {
+            id = "H62etg";
+            type = "wifi";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "H62etg";
+          };
+          wifi-security = {
+            auth-alg = "open";
+            key-mgmt = "wpa-psk";
+            psk = "$PIL_WIFI_H62ETG_PASSWORD";
           };
         };
       };
