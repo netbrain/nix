@@ -4,8 +4,8 @@
     ./nvidia.nix
     ./kanshi.nix
     ./powermgmt.nix
-    ./vfio.nix
+#    ./vfio.nix
     ./wayland.nix
-    ./libvirt.nix
+#    ./libvirt.nix
   ];
 }
