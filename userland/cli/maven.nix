@@ -10,7 +10,7 @@
           <server>
             <id>nexus.altibox.net</id>
             <username>kimei</username>
-            <password>{Flf0jYrrzdkHB+/AAdh+zPPmB/hbZYs7FZrOpTdVOow=}</password>
+            <password>{gLK6YSuf1RsHj5cGlf8/QKu0UZ5NuNcl4pl+svXk8Q8=}</password>
           </server>
         </servers>
         <mirrors>
