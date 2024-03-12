@@ -60,6 +60,15 @@
     inbg(){
       nohup "$@" &>/dev/null & disown
     }
+
+    #Altibox
+    aibencrypt() {
+      if [ $# -eq 0 ] || [ $1 = "help" ]; then
+        echo "Usage: aibencrypt [environment] [key] [value]"
+        return
+      fi
+      docker run -ti --rm nexus.altibox.net:8086/aib/init-puppet secret $1 block $2 $3
+    }
     '';
     shellAliases = {
       vi = "hx";
@@ -74,6 +83,7 @@
       gateway = "inbg gateway";
       pwd-lyse-vpn = "read -s -p 'Master password:' pwd; echo -n $(echo $pwd | bw get password 4fab525d-7b81-4421-8813-b084006afed4)$(echo $pwd | bw get totp 4fab525d-7b81-4421-8813-b084006afed4) | wl-copy";
       pwd-lyse-c2a = "bw get password 3d4e37ea-adc9-4733-895f-b05f00ac02e8 | wl-copy";
+      pwd-lyse-ipa = "bw get password 4fab525d-7b81-4421-8813-b084006afed4 | wl-copy";
     };
   };
 

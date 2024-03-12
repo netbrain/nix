@@ -81,7 +81,7 @@
             key = "$LYSE_VPN_KEY";
             password-flags = "1";
             push-peer-info = "yes";
-            remote = "gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:tcp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp, gmvpn.altibox.net:1194:udp";
+            remote = "gmvpn.altibox.net:1194:udp";
             remote-cert-tls = "server";
             reneg-seconds = "604800";
             tls-crypt = "$LYSE_VPN_TLS_CRYPT";
@@ -93,10 +93,13 @@
           ipv4 = {
             method = "auto";
             never-default = "true";
+            ignore-auto-dns = "true";
+            dns = "10.11.1.20;10.11.0.20;";
+            dns-search = "lysetele.net;aibservers.local;altibox.ad;lyse.no;datadammen.no;datadammentest.no;sap.local;in-addr.arpa;ip6.arpa;lyse.mgmt;altibox.net;snartibox.no;snartibox.net;altibox.noaltibox.cloud;";
           };
           ipv6 = {
             addr-gen-mode = "stable-privacy";
-            method = "auto";
+            method = "disabled";
           };
           proxy = {
           };

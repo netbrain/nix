@@ -39,12 +39,31 @@
       vim
       wget
       curl
+      dig
     ];
   };
 
   networking = {
     enableIPv6 = false;
     firewall.enable = false;
+  };
+
+  services.resolved = {
+    enable = false;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
+  };
+
+  services.openvpn.servers = {
+    LyseVPN  = { 
+      config = '' config /home/netbrain/lyse-vpn.conf ''; 
+      autoStart = false;
+      updateResolvConf = true;
+    };
   };
 
   system.stateVersion = "23.05";

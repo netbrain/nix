@@ -13,9 +13,11 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.consoleMode = "1";
-  boot.extraModprobeConfig = ''
-    options snd-hda-intel dmic_detect=0
-  '';
+#  boot.extraModprobeConfig = ''
+#    options snd-hda-intel dmic_detect=1
+#    options snd-hda-intel probe_mask=1
+#    options snd-hda-intel single_cmd=1
+#  '';
   #boot.extraModprobeConfig = ''
   #  options iwlwifi power_save=1 disable_11ax=1
   #'';
