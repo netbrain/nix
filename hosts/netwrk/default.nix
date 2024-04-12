@@ -7,5 +7,6 @@
 #    ./vfio.nix
     ./wayland.nix
 #    ./libvirt.nix
+    ./openrazer.nix
   ];
 }

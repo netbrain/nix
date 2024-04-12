@@ -4,11 +4,10 @@
 
   imports = [
     ./git.nix
-#    ./neovim.nix
-    ./syncthing.nix
     ./helix.nix
     ./golang.nix
     ./maven.nix
+    ./zoxide.nix
   ];
 
   nixpkgs = {

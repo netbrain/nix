@@ -5,7 +5,7 @@
   sound.enable = true;
   hardware.enableAllFirmware  = true;
 
-  services.xserver.layout = "no";
+  services.xserver.xkb.layout = "no";
 
   services.pipewire = {
     enable = true;
@@ -25,12 +25,14 @@
       tofi
       wlr-randr
       wdisplays
-      waybar
       pavucontrol
       pulseaudio
       playerctl
       discord
       waypipe
+      (waybar.override {
+        wireplumberSupport = false;
+      })
     ];
   };
 
