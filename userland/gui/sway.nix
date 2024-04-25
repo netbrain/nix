@@ -62,7 +62,7 @@
           # { command = "floating enable"; criteria = { app_id = "gsimplecal"; }; }
           #{ command = "floating enable"; criteria = { app_id = "firefox-nightly"; title = "About Firefox Nightly"; }; }
           { command = "move container to workspace 9"; criteria = { class = "Slack"; }; }
-          { command = "move container to workspace 9"; criteria = { title = "Chat | Microsoft Teams classic"; }; }
+          #{ command = "move container to workspace 9"; criteria = { title = "Chat | Microsoft Teams classic"; }; }
           #{ command = "move container to workspace 9"; criteria = { class = "Microsoft Teams - Preview"; }; }
           #{ command = "move container to workspace 3"; criteria = { class = "Google-chrome"; }; }
           #{ command = "floating enable, resize set width 600px height 800px"; criteria = { title = "Save File"; }; }
@@ -87,7 +87,7 @@
 #  before-sleep 'swaylock --daemonize --color 3c3836'
 #  '';
 #}
-{ command = "google-chrome-stable --app='https://teams.microsoft.com'"; }
+#{ command = "google-chrome-stable --app='https://teams.microsoft.com'"; }
 { command = "foot"; }
 #        { command = "google-chrome-stable"; }
 { command = "slack --logLevel=error"; }
