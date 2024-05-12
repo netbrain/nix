@@ -17,7 +17,6 @@
     jetbrains.datagrip
     jetbrains.idea-ultimate
     jetbrains.goland
-    jetbrains.gateway
     jetbrains.rider
     jetbrains.webstorm
     slack

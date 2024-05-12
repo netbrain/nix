@@ -79,7 +79,6 @@
       rider = "inbg rider";
       webstorm = "inbg webstorm";
       idea-ultimate = "inbg idea-ultimate";
-      gateway = "inbg gateway";
       pwd-lyse-vpn = "read -s -p 'Master password:' pwd; echo -n $(echo $pwd | bw get password 4fab525d-7b81-4421-8813-b084006afed4)$(echo $pwd | bw get totp 4fab525d-7b81-4421-8813-b084006afed4) | wl-copy";
       pwd-lyse-c2a = "bw get password 3d4e37ea-adc9-4733-895f-b05f00ac02e8 | wl-copy";
       pwd-lyse-ipa = "bw get password 4fab525d-7b81-4421-8813-b084006afed4 | wl-copy";
