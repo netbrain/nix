@@ -68,6 +68,8 @@
       fi
       docker run -ti --rm nexus.altibox.net:8086/aib/init-puppet secret $1 block $2 $3
     }
+    
+    export TERM="xterm"
     '';
     shellAliases = {
       vi = "hx";
