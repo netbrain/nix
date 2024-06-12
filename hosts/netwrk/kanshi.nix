@@ -1,7 +1,7 @@
 {
   home-manager.users.netbrain.services.kanshi = {
     enable = true;
-    settings = {
+    profiles = {
       default = {
         outputs = [
           {
