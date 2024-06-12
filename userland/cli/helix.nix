@@ -16,7 +16,12 @@
 	    nil						                            # nix
 	    marksman					                        # markdown
       omnisharp-roslyn                          # c-sharp
-      netcoredbg                                # c-sharp dbg 
+      netcoredbg                                # c-sharp dbg
+      templ                                     # templ
+      vscode-langservers-extracted              # html, css, json, eslint
+      dockerfile-language-server-nodejs         # dockerfile
+      omnisharp-roslyn                          # c-sharp
+      taplo                                     # toml
     ];
 
     languages = {
