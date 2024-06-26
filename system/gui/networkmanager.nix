@@ -1,6 +1,5 @@
 { pkgs, config, ... }:
 {
-  
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
     networkmanager-sstp
@@ -15,11 +14,11 @@
     "lyse/vpn/key" = {};
     "lyse/vpn/tls-crypt" = {};
     "home/wifi/netwifi/password" = {};
+    "home/wifi/ph/password" = {};
     "pil/wifi/h62etg/password" = {};
   };
 
   sops.templates."networkmanager".content = ''
-
     LYSE_VPN_CA = "${config.sops.secrets."lyse/vpn/ca".path}"
     LYSE_VPN_CERT = "${config.sops.secrets."lyse/vpn/cert".path}"
     LYSE_VPN_KEY = "${config.sops.secrets."lyse/vpn/key".path}"
@@ -27,6 +26,7 @@
     LYSE_WIFI_LYSE_BYOD_PASSWORD = "${config.sops.placeholder."lyse/wifi/lyse-byod/password"}"
     DAVO_VPN_PASSWORD = "${config.sops.placeholder."davo/vpn/password"}"
     HOME_WIFI_NETWIFI_PASSWORD = "${config.sops.placeholder."home/wifi/netwifi/password"}"
+    HOME_WIFI_PH_PASSWORD = "${config.sops.placeholder."home/wifi/ph/password"}"
     PIL_WIFI_H62ETG_PASSWORD = "${config.sops.placeholder."pil/wifi/h62etg/password"}"
   '';
 
@@ -169,6 +169,22 @@
             method = "auto";
           };
           proxy = {
+          };
+        };
+        altibox146449 = {
+          connection = {
+            id = "altibox146449";
+            type = "wifi";
+            interface-name = "wlp0s20f3";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "altibox146449";
+          };
+          wifi-security = {
+            auth-alg = "open";
+            key-mgmt = "wpa-psk";
+            psk = "$HOME_WIFI_PH_PASSWORD";
           };
         };
         h62etg = {
