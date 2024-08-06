@@ -2,7 +2,6 @@
 
 {
 
-  sound.enable = true;
   hardware.enableAllFirmware  = true;
 
   services.xserver.xkb.layout = "no";
