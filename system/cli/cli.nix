@@ -40,6 +40,7 @@
       wget
       curl
       dig
+      bc
     ];
   };
 
