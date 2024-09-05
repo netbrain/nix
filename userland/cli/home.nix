@@ -77,6 +77,7 @@
       ".." = "cd .." ;
       nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
       ngc = "sudo sh -c 'nix-env --delete-generations old && nix-store --gc && nix-collect-garbage -d'";
+      ns = "nix --extra-experimental-features \"nix-command flakes\" search nixpkgs";
       goland = "inbg goland";
       rider = "inbg rider";
       webstorm = "inbg webstorm";

@@ -16,6 +16,7 @@
     "home/wifi/netwifi/password" = {};
     "home/wifi/ph/password" = {};
     "pil/wifi/h62etg/password" = {};
+    "miles/wifi/password" = {};
   };
 
   sops.templates."networkmanager".content = ''
@@ -28,6 +29,7 @@
     HOME_WIFI_NETWIFI_PASSWORD = "${config.sops.placeholder."home/wifi/netwifi/password"}"
     HOME_WIFI_PH_PASSWORD = "${config.sops.placeholder."home/wifi/ph/password"}"
     PIL_WIFI_H62ETG_PASSWORD = "${config.sops.placeholder."pil/wifi/h62etg/password"}"
+    MILES_WIFI_PASSWORD = "${config.sops.placeholder."miles/wifi/password"}"
   '';
 
   networking.networkmanager = {
@@ -160,6 +162,31 @@
             auth-alg = "open";
             key-mgmt = "wpa-psk";
             psk = "$HOME_WIFI_NETWIFI_PASSWORD";
+          };
+          ipv4 = {
+            method = "auto";
+          };
+          ipv6 = {
+            addr-gen-mode = "default";
+            method = "auto";
+          };
+          proxy = {
+          };
+        };
+        miles = {
+          connection = {
+            id = "miles";
+            type = "wifi";
+            interface-name = "wlp0s20f3";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "Miles";
+          };
+          wifi-security = {
+            auth-alg = "open";
+            key-mgmt = "wpa-psk";
+            psk = "$MILES_WIFI_PASSWORD";
           };
           ipv4 = {
             method = "auto";
