@@ -1,9 +1,10 @@
 {
   home-manager.users.netbrain.services.kanshi = {
     enable = true;
-    profiles = {
-      default = {
-        outputs = [
+    settings = [
+    {
+      profile.name = "default";
+      profile.outputs = [
           {
             criteria = "eDP-1";
             status = "enable";
@@ -11,9 +12,11 @@
             mode = "3840x2400@60";
           }
         ];
-      };
-      docked1 = {
-        outputs = [
+    }
+      
+    {
+      profile.name = "docked1";
+      profile.outputs = [
           {
             criteria = "eDP-1";
             status = "disable";
@@ -25,9 +28,11 @@
             mode = "3840x2160@60";
           }
         ];
-      };
-       docked2 = {
-        outputs = [
+    }
+      
+    {
+      profile.name ="docked2";
+      profile.outputs = [
           {
             criteria = "eDP-1";
             status = "disable";
@@ -39,9 +44,11 @@
             mode = "3840x2160@60";
           }
         ];
-      };
-       docked3 = {
-        outputs = [
+    }
+    
+    {
+      profile.name = "docked3";
+      profile.outputs = [
           {
             criteria = "eDP-1";
             status = "disable";
@@ -53,7 +60,7 @@
             mode = "3840x2160@60";
           }
         ];
-      };
-    };
+    }
+    ];
   };
 }
