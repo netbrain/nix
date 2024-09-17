@@ -1,14 +1,17 @@
 { pkgs, ... }:
-
 {
-  imports = [
-    ../cli/home.nix
-    #./alacritty.nix
+  imports = builtins.trace "Loading users/netbrain/home/default.nix:" [
+    ./home.nix
     ./foot.nix
+    ./git.nix
+    ./golang.nix
+    ./gtk.nix
+    ./helix.nix
     ./mako.nix
+    ./maven.nix
     ./sway.nix
     ./waybar.nix
-    ./gtk.nix
+    ./zoxide.nix
     ./zwift.nix
   ];
 

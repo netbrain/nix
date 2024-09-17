@@ -1,7 +1,6 @@
 {pkgs, ... }:
 
 {
-  hardware.nvidia-container-toolkit.enable = true;
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
@@ -11,7 +10,4 @@
       })
     }'';
   };
-
-  # Required by enableNvidia
-  hardware.graphics.enable32Bit = true;
 }

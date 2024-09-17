@@ -1,9 +1,11 @@
+{ inputs, ... }:
+
 {
-  imports = [
+  imports =  inputs.nixpkgs.lib.traceSeq "Loading hosts/netmiles/default.nix:" [
+     inputs.hardware.nixosModules.lenovo-thinkpad-x1-12th-gen
     ./configuration.nix
-    ./kanshi.nix
+    ./hw.nix
     ./powermgmt.nix
-    ./wayland.nix
-    ./openrazer.nix
+    ./gui.nix
   ];
 }

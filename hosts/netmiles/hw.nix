@@ -1,4 +1,10 @@
 {
+
+  hardware.openrazer = {
+    enable = true;
+    users = ["netbrain"];
+  };
+
   hardware.bluetooth = {
     enable = true;
     settings = {
@@ -7,5 +13,4 @@
       };
     };
   };
-  services.blueman.enable = true;
 }

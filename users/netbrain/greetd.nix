@@ -5,7 +5,7 @@ let
     export XDG_SESSION_DESKTOP=sway
     export XDG_CURRENT_DESKTOP=sway
 
-    systemd-run --user --scope --collect --quiet --unit=sway systemd-cat --identifier=sway ${pkgs.sway}/bin/sway --unsupported-gpu $@
+    systemd-run --user --scope --collect --quiet --unit=sway systemd-cat --identifier=sway ${pkgs.sway}/bin/sway $@
   '';
 in
 {
