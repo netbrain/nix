@@ -21,10 +21,16 @@
 
     # Call mkConfig once to generate both NixOS + HM and  Standalone Home Manager configurations
     configuration = lib.mkConfig {
-      hosts = [{
-        hostname = "netmiles";
-        users = [ "netbrain" ];
-      }];
+      hosts = [
+        {
+          hostname = "netmiles";
+          users = [ "netbrain" ];
+        }
+        {
+          hostname = "netbox";
+          users = [ "netbrain" ];
+        }
+      ];
     };
   in
   {
