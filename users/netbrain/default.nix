@@ -13,5 +13,7 @@
     ./user.nix
     ./virtualisation.nix
     ./wireshark.nix
+    ./hyprland.nix
+    ./lyse-secrets.nix
   ];
 }

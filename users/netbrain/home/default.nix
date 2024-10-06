@@ -8,24 +8,28 @@
     ./gtk.nix
     ./helix.nix
     ./mako.nix
-    ./maven.nix
     ./sway.nix
     ./waybar.nix
     ./zoxide.nix
     ./zwift.nix
+    ./river.nix
+    ./hyprland.nix
+    ./stylix.nix
   ];
 
   home.packages = with pkgs; [
-    google-chrome
-#    jetbrains.datagrip
-#    jetbrains.idea-ultimate
-#    jetbrains.goland
-#    jetbrains.rider
-#    jetbrains.webstorm
+    #google-chrome
+    brave
+    jetbrains.datagrip
+    jetbrains.idea-ultimate
+    jetbrains.goland
+    jetbrains.rider
+    jetbrains.webstorm
     slack
     remmina
     spotify
     element-desktop
+    lswt
   ];
 }
 

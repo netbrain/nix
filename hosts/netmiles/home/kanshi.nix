@@ -1,6 +1,7 @@
 {
-  home-manager.users.netbrain.services.kanshi = {
+  services.kanshi = {
     enable = true;
+    systemdTarget = "river-session.target";
     settings = [
     {
       profile.name = "default";
@@ -10,6 +11,7 @@
             status = "enable";
             scale = 1.0;
             mode = "1920x1200@60";
+            position = "0,0";
           }
         ];
     }
@@ -26,6 +28,7 @@
             status = "enable";
             scale = 1.0;
             mode = "3840x2160@60";
+            position = "0,0";
           }
         ];
     }

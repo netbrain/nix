@@ -1,6 +1,6 @@
-{ inputs,... }:
 {
-  imports =  inputs.nixpkgs.lib.traceSeq "Loading hosts/netmiles/home/default.nix:" [
+  imports = [
     ./kanshi.nix
+    ./pwd-lyse-maven-update.nix
   ];
 }

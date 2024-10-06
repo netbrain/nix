@@ -32,7 +32,7 @@
    };
     
     settings = {
-      theme = "gruvbox";
+      # theme = "gruvbox";
       editor = {
         line-number = "relative";
         lsp.display-messages = true;

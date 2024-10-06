@@ -18,10 +18,20 @@
       swayidle
       wl-clipboard
       wf-recorder
-      mako
+#      mako
       slurp
       grim
+      
       tofi
+      wofi
+      rofi
+      bemenu
+      fuzzel
+      #yofi
+      anyrun
+      nwg-drawer
+      
+      
       wlr-randr
       wdisplays
       pavucontrol
@@ -29,10 +39,7 @@
       playerctl
       discord
       waypipe
-      (waybar.override {
-        wireplumberSupport = false;
-      })
-    ];
+      ];
   };
 
 

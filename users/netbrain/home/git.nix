@@ -19,16 +19,16 @@
       core.editor = "hx";
     };
     includes = [{
-      path = "~/.gitconfig-altibox";
-      condition = "gitdir:~/dev/altibox/";
+      path = "~/.gitconfig-lyse";
+      condition = "gitdir:~/dev/lyse/";
     }];
   };
 
-  home.file.".gitconfig-altibox" = {
+  home.file.".gitconfig-lyse" = {
     text = ''
       [user]
       name = Kim Eik
-      email = kim.eik@altibox.no
+      email = kim.eik@lyse.no
     '';
   };
 }

@@ -24,6 +24,12 @@
   virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.libvirtd.enable = true;
 
+  networking = {
+    hosts = {
+      "192.168.49.2" = ["grafana.local" "prometheus.local"]; # Minikube IP
+    };
+  };
+  
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

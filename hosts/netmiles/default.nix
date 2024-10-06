@@ -7,5 +7,7 @@
     ./hw.nix
     ./powermgmt.nix
     ./gui.nix
+    ./lyse-cert.nix
+    ./lyse-docker.nix
   ];
 }

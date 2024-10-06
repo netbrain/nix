@@ -10,21 +10,30 @@ rec {
       inherit system;
       specialArgs = { inherit inputs; };
       modules = [
+        # Load stylix (can't load both hm and nixos module)
+        # inputs.stylix.nixosModules.stylix
+        
         # Load Home Manager module for NixOS
         inputs.home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "hmbackup";
+          
           home-manager.users = lib.listToAttrs (lib.map (user: {
             name = user;
-            value = import ../users/${user}/home;    
+            value = {
+              imports = [
+                # Load stylix
+                inputs.stylix.homeManagerModules.stylix               
+                ../users/${user}/home
+                ../hosts/${hostname}/home
+              ];
+            };
           }) users);
         }
 
         # Load system-specific configuration (hostname.nix or hostname/default.nix)
         ../hosts/${hostname}
-
-        # Load host-specific Home Manager configuration
-        ../hosts/${hostname}/home
 
         {
           # System configurations
@@ -53,7 +62,10 @@ rec {
       pkgs = builtins.getAttr system inputs.nixpkgs.outputs.legacyPackages;
 
       modules = [
-        # Trace and load user-specific home configuration (home.nix or home/default.nix)
+        # Load stylix
+        inputs.stylix.homeManagerModules.stylix
+      
+        # Load user-specific home configuration (home.nix or home/default.nix)
         ../users/${username}/home
 
         {
