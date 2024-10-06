@@ -20,14 +20,16 @@
     lib = (inputs.nixpkgs.lib // inputs.home-manager.lib // (import ./lib/default.nix { inherit inputs; }));
 
     # Call mkConfig once to generate both NixOS + HM and  Standalone Home Manager configurations
-    config = lib.mkConfig {
-      hostname = "netmiles";
-      users = [ "netbrain" ];
+    configuration = lib.mkConfig {
+      hosts = [{
+        hostname = "netmiles";
+        users = [ "netbrain" ];
+      }];
     };
   in
   {
     # Expose the nixosConfigurations and homeConfigurations from the single mkConfig call
-    nixosConfigurations = config.nixosConfigurations;
-    homeConfigurations = config.homeConfigurations;
+    nixosConfigurations = configuration.nixosConfigurations;
+    homeConfigurations = configuration.homeConfigurations;
   };
 }

@@ -87,23 +87,26 @@ rec {
       ];
     };
 
-  # Combine system and home configurations
-  mkConfig = { hostname, system ? "x86_64-linux", users ? [ ] }: {
-    nixosConfigurations = {
-      "${hostname}" = mkSystem {
-        hostname = hostname;
-        users = users;
+  mkConfig = { hosts }: {
+    nixosConfigurations = lib.listToAttrs (map (host: {
+      name = host.hostname;
+      value = mkSystem {
+        hostname = host.hostname;
+        system = host.system or "x86_64-linux";
+        users = host.users or [];
       };
-    };
+    }) hosts);
 
-    homeConfigurations = lib.listToAttrs (map (user: {
-      name = "${user}@${hostname}";
-      value = mkHome {
-        username = user;
-        system = system;
-        hostname = hostname;
-        stateVersion = "23.05";
-      };
-    }) users);
+    homeConfigurations = lib.flatten (map (host: 
+      lib.listToAttrs (map (user: {
+        name = "${user}@${host.hostname}";
+        value = mkHome {
+          username = user;
+          system = host.system or "x86_64-linux";
+          hostname = host.hostname;
+          stateVersion = "23.05";
+        };
+      }) host.users or [])
+    ) hosts);
   };
 }
