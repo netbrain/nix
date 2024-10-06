@@ -35,6 +35,9 @@ rec {
         # Load system-specific configuration (hostname.nix or hostname/default.nix)
         ../hosts/${hostname}
 
+        # Load diskos
+        inputs.disko.nixosModules.disko
+
         {
           # System configurations
           networking.hostName = hostname;
