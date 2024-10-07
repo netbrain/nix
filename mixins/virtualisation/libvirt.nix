@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
@@ -27,18 +26,7 @@
     swtpm
   ];
 
-  environment.etc = {
-    # Looking glass
-    "tmpfiles.d/10-looking-glass.conf" = {
-      mode = "0555";
-      text = ''
-        # Type Path               Mode UID  GID Age Argument
-        f /dev/shm/looking-glass 0666 netbrain kvm -
-        '';
-      };
-    };
-
-  # Group
+    # Group
   users.users.netbrain.extraGroups = [ "libvirtd" "kvm" "qemu-libvirtd" ];
   environment.sessionVariables.LIBVIRT_DEFAULT_URI = [ "qemu:///system" ];
 }

@@ -6,30 +6,29 @@
     ./git.nix
     ./golang.nix
     ./gtk.nix
-    ./helix.nix
+    ../../../mixins/programs/home/helix.nix
     ./mako.nix
-    ./sway.nix
+    #./sway.nix
     ./waybar.nix
     ./zoxide.nix
-    ./zwift.nix
     ./river.nix
-    ./hyprland.nix
+    #./hyprland.nix
     ./stylix.nix
   ];
 
-  home.packages = with pkgs; [
+  #home.packages = with pkgs; [
     #google-chrome
-    brave
-    jetbrains.datagrip
-    jetbrains.idea-ultimate
-    jetbrains.goland
-    jetbrains.rider
-    jetbrains.webstorm
-    slack
-    remmina
-    spotify
-    element-desktop
-    lswt
-  ];
+    #brave
+    #jetbrains.datagrip
+    #jetbrains.idea-ultimate
+    #jetbrains.goland
+    #jetbrains.rider
+    #jetbrains.webstorm
+    #slack
+    #remmina
+    #spotify
+    #element-desktop
+    #lswt
+  #];
 }
 

@@ -6,7 +6,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/netbrain/.config/sops/age/keys.txt";
   };

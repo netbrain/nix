@@ -13,11 +13,6 @@
     username = "netbrain";
     homeDirectory = "/home/netbrain";
     stateVersion = "24.05";
-    #pointerCursor = {
-    #  name = "vanilla-dmz";
-    #  size = 64;
-    #  package = pkgs.vanilla-dmz;
-    #};
   };
 
   home.packages = with pkgs; [
@@ -47,7 +42,6 @@
   };
 
   programs.htop.enable = true;
-  programs.home-manager.enable = true;
 
   programs.bash = {
     enable = true;

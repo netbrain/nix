@@ -1,19 +1,11 @@
 {
   
-  imports = builtins.trace "Loading users/netbrain/default.nix" [
-    ./greetd.nix
+  imports = [
     ./gui.nix
-    ./libvirt.nix
-    ./networkmanager.nix
     ./security.nix
-    ./services.nix
-    ./sops.nix
-    ./steam.nix
+    ../../mixins/services/openssh.nix
+    ../../mixins/programs/zwift.nix
     ./system.nix
     ./user.nix
-    ./virtualisation.nix
-    ./wireshark.nix
-    ./hyprland.nix
-    ./lyse-secrets.nix
   ];
 }

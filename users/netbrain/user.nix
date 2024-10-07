@@ -10,7 +10,8 @@
           "audio" 
           "docker" 
           "video" 
-          "wheel" 
+          "wheel"
+          "input"
           "netbrain" 
         ];
         shell = pkgs.bash;

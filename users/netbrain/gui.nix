@@ -11,40 +11,38 @@
     pulse.enable = true;
   };
 
-  programs.sway = {
-    enable = true;
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      wf-recorder
-#      mako
-      slurp
-      grim
+#  programs.sway = {
+#    enable = true;
+#    extraPackages = with pkgs; [
+#      swaylock
+#      swayidle
+#     wl-clipboard
+#      wf-recorder
+#      mako     slurp
+#      grim
       
-      tofi
-      wofi
-      rofi
-      bemenu
-      fuzzel
+#      tofi
+#      wofi
+#      rofi
+#      bemenu
+#      fuzzel
       #yofi
-      anyrun
-      nwg-drawer
+#      anyrun
+#      nwg-drawer
       
       
-      wlr-randr
-      wdisplays
-      pavucontrol
-      pulseaudio
-      playerctl
-      discord
-      waypipe
-      ];
-  };
+#      wlr-randr
+#      wdisplays
+#      pavucontrol
+#      pulseaudio
+#      playerctl
+#      discord
+#      waypipe
+#      ];
+#  };
 
 
-  systemd.services.NetworkManager-wait-online.enable = false;
-  programs.nm-applet.enable = true;
+#  systemd.services.NetworkManager-wait-online.enable = false;
 
   fonts = {
     packages = with pkgs; [

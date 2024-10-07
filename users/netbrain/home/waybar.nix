@@ -1,5 +1,8 @@
-{ ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  riverTagsEnabled = builtins.getEnv "HOSTNAME" != "netbox";
+in
 {
   programs.waybar = {
     enable = true;
@@ -28,22 +31,22 @@
         "clock"
       ];
 
-    battery = {
-      format = "{capacity}% {icon}";
-      format-alt = "{time} {icon}";
-      format-charging = "{capacity}% ";
-      format-icons = [ "" "" "" "" "" ];
-      format-plugged = "{capacity}% ";
-      states = {
-        critical = 15;
-        warning = 30;
+      battery = {
+        format = "{capacity}% {icon}";
+        format-alt = "{time} {icon}";
+        format-charging = "{capacity}% ";
+        format-icons = [ "" "" "" "" "" ];
+        format-plugged = "{capacity}% ";
+        states = {
+          critical = 15;
+          warning = 30;
+        };
       };
-    };
 
-    "river/tags" = {
-      num-tags = 6;
-      tag-labels = [ "1www" "2dev" "3comms" "4mail" "5" "6" ];
-    };    
+      "river/tags" = lib.mkIf riverTagsEnabled {
+        num-tags = 6;
+        tag-labels = [ "1www" "2dev" "3comms" "4mail" "5" "6" ];
+      };    
     }];
 
     style = ''
