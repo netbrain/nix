@@ -1,5 +1,6 @@
+{ pkgs, ... }:
 {
-  programs.helix = {    
+  programs.helix = { 
     extraPackages = with pkgs; [
 	    gopls 						                        # golang
       delve                                     # golang debugger

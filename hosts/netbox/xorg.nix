@@ -58,6 +58,24 @@
     # Start Zwift (run in the background)
     xterm -e 'zwift --replace' &
 
+    # Retry Bluetooth connection setup and connection in the background
+    (
+      while true; do
+        bluetoothctl power on
+        bluetoothctl agent on
+        bluetoothctl pair 41:42:C4:33:F3:8A
+        bluetoothctl trust 41:42:C4:33:F3:8A
+        if bluetoothctl connect 41:42:C4:33:F3:8A; then
+          echo "Bluetooth connected successfully."
+          break
+        else
+          echo "Bluetooth connection failed, retrying in 5 seconds..."
+          sleep 5
+        fi
+      done
+    ) &
+  
+
     # Wait for Openbox to finish
     wait $OPENBOX_PID
 

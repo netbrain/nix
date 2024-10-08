@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  riverTagsEnabled = builtins.getEnv "HOSTNAME" != "netbox";
-in
 {
   programs.waybar = {
     enable = true;
@@ -43,7 +40,7 @@ in
         };
       };
 
-      "river/tags" = lib.mkIf riverTagsEnabled {
+      "river/tags" = {
         num-tags = 6;
         tag-labels = [ "1www" "2dev" "3comms" "4mail" "5" "6" ];
       };    
