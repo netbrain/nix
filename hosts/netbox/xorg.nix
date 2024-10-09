@@ -1,27 +1,9 @@
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  nixpkgs.config.nvidia.acceptLicense = true;
-  
-  virtualisation = {
-    podman = {
-      enable = true;
-      enableNvidia = true;
-    };
-  };
-
-  hardware.graphics.enable32Bit = true;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.powerManagement.enable = false; #true
-  hardware.nvidia-container-toolkit.enable = true;
-  hardware.nvidia.open = false;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
-
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" "nvidiaLegacy390" ];
     displayManager.startx.enable = true;
   };
 

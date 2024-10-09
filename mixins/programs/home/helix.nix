@@ -2,15 +2,8 @@
   programs.helix = {
     enable = true;      
     defaultEditor = true;
-    #languages = {
-    #  language-server.jdtls = with pkgs; {
-    #    command = "${jdt-language-server}/bin/jdt-language-server";
-    #    args = ["-data" "/tmp"];
-    #  };
-    #};
     
     settings = {
-      # theme = "gruvbox";
       editor = {
         line-number = "relative";
         lsp.display-messages = true;
@@ -24,6 +17,8 @@
       keys.normal = {
         space.space = "file_picker";
         esc = [ "collapse_selection" "keep_primary_selection" ];
+        "A-h" = ":bprev";
+        "A-l" = ":bnext";
       };
     };
   };
