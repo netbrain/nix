@@ -7,7 +7,7 @@
       name = "zwift";
       src = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/netbrain/zwift/master/zwift.sh";
-        hash = "sha256-5faq6dQMtSCYjXMyDpwIWxG5XKLlgBEBuzPW8JsZokk=";
+        hash = "sha256-oNo2dOw3R/pd3IhVbT2AbG709SUIHaqbkTTJ57vO56c=";
       };
       buildInputs = [ pkgs.bash ];
       unpackPhase = ''
