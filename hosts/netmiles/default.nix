@@ -9,6 +9,7 @@
     ./gui.nix
     ./lyse-cert.nix
     ./lyse-docker.nix
+    ./tailscale.nix
     ../../mixins/networking/networkmanager.nix
     ../../mixins/virtualisation/libvirt.nix
     ../../mixins/virtualisation/docker.nix

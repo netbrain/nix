@@ -38,7 +38,7 @@
     xhost +local:
 
     # Start Zwift (run in the background)
-    xterm -e 'zwift --replace' &
+    xterm -e '/usr/bin/env bash -c "zwift --replace"' &
 
     # Retry Bluetooth connection setup and connection in the background
     (

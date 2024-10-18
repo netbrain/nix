@@ -30,6 +30,10 @@
           hostname = "netbox";
           users = [ "netbrain" "elin" ];
         }
+        {
+          hostname = "netbfg";
+          users = [ "netbrain" ];
+        }
       ];
     };
   in

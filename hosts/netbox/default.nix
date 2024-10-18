@@ -26,4 +26,5 @@
   # needed for home-manager?
   programs.dconf.enable = true;
 
+  services.tailscale.enable = true;
 }
