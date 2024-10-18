@@ -12,6 +12,7 @@
     xorg.xorgserver
     xorg.xf86inputevdev
     xorg.xhost
+    xorg.xrefresh
     openbox
   ];
 
@@ -38,8 +39,8 @@
     xhost +local:
 
     # Start Zwift (run in the background)
-    xterm -e '/usr/bin/env bash -c "zwift --replace"' &
-
+    xterm -bg black -fg white -e 'zwift --replace' &
+    
     # Retry Bluetooth connection setup and connection in the background
     (
       while true; do
@@ -56,7 +57,8 @@
         fi
       done
     ) &
-  
+
+    sleep 3 && xrefresh 
 
     # Wait for Openbox to finish
     wait $OPENBOX_PID
