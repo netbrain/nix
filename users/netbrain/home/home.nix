@@ -33,6 +33,7 @@
     iotop
     tailscale
     bitwarden-cli
+    moonlight-qt
   ];
 
   home.sessionVariables = {

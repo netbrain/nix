@@ -11,15 +11,12 @@
   ];
 
   home.packages = with pkgs; [
-    brave
     jetbrains.datagrip
     jetbrains.idea-ultimate
     jetbrains.goland
     jetbrains.rider
     jetbrains.webstorm
-    slack
     remmina
     spotify
-    element-desktop
   ];
 }
