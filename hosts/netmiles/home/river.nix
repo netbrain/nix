@@ -205,7 +205,7 @@
       riverctl rule-add -title "Microsoft Teams" tags $((2#100))
       riverctl spawn "chromium --profile-directory=Default1 --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo"
 
-      riverctl rule-add -title "Messenger" tags i $((2#100))
+      riverctl rule-add -title "Messenger" tags $((2#100))
       riverctl spawn "chromium --profile-directory=Default1 --app-id=bbdeiblfgdokhlblpgeaokenkfknecgl"
 
       # Applets
