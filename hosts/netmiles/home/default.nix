@@ -18,5 +18,7 @@
     jetbrains.webstorm
     remmina
     spotify
+    pavucontrol
+    wdisplays
   ];
 }
