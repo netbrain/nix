@@ -14,7 +14,7 @@
   fonts = {
     packages = with pkgs; [
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       liberation_ttf
       fira-code
@@ -23,7 +23,12 @@
       dina-font
       proggyfonts
       font-awesome
-      nerdfonts
+      nerd-fonts.zed-mono
+      nerd-fonts.victor-mono
+      nerd-fonts.ubuntu-sans
+      nerd-fonts.ubuntu-mono
+      nerd-fonts.noto
+      nerd-fonts.inconsolata
     ];
   };
 

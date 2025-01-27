@@ -15,7 +15,7 @@ rec {
         
         # Load Home Manager module for NixOS
         inputs.home-manager.nixosModules.home-manager {
-          home-manager.useGlobalPkgs = true;
+          home-manager.useGlobalPkgs = false;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "hmbackup";
           
@@ -52,6 +52,10 @@ rec {
             (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
             inputs;
         }
+
+        # Load zwift
+        inputs.zwift.nixosModules.zwift
+        
       ] ++ lib.map (u: ../users/${u}) users; # Load each user's specific system configuration
     };
 
@@ -73,7 +77,7 @@ rec {
 
         {
           # Home Manager specific configuration for each user
-          home-manager.useGlobalPkgs = true;
+          home-manager.useGlobalPkgs = false;
           home-manager.useUserPackages = true;
           nixpkgs.config.allowUnfree = true;
           programs.home-manager.enable = true;

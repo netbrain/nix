@@ -12,6 +12,7 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    zwift.url = "github:netbrain/zwift";
   };
 
   outputs = inputs@{ self, ... }:
