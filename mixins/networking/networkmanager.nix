@@ -35,7 +35,7 @@
   networking.networkmanager = {
     enable = true;
     ensureProfiles = {
-      environmentFiles = [ /run/secrets-rendered/networkmanager ];
+      environmentFiles = [ /run/secrets/rendered/networkmanager ];
       profiles = {
         lyse-byod = {
           connection = {

@@ -24,4 +24,8 @@
     ../../secrets/sops.nix
     ../../secrets/lyse-secrets.nix
   ];
+
+  services.ollama = {
+  enable = true;
+};
 }

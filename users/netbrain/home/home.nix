@@ -33,7 +33,14 @@
     iotop
     tailscale
     bitwarden-cli
+    #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
+    #  dontCheckForBrokenSymlinks = true;
+    #}))
+    #(lldb.overrideAttrs (oldAttrs: rec {
+    #  dontCheckForBrokenSymlinks = true;
+    #}))
     moonlight-qt
+    ripgrep
   ];
 
   home.sessionVariables = {
@@ -47,7 +54,7 @@
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-    eval "$(direnv hook bash)"
+    #eval "$(direnv hook bash)"
     
     inbg(){
       nohup "$@" &>/dev/null & disown
