@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -41,6 +40,7 @@
     #}))
     moonlight-qt
     ripgrep
+    rip2
   ];
 
   home.sessionVariables = {
@@ -54,8 +54,7 @@
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-    #eval "$(direnv hook bash)"
-    
+       
     inbg(){
       nohup "$@" &>/dev/null & disown
     }
@@ -71,7 +70,10 @@
     
     export TERM="xterm"
     '';
+    
     shellAliases = {
+      rm = "echo Use 'rip' instead of rm.";
+      rmdir = "echo Use 'rip' instead of rmdir.";
       vi = "hx";
       vim = "hx";
       ".." = "cd .." ;
