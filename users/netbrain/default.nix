@@ -1,5 +1,4 @@
 {
-  
   imports = [
     ./gui.nix
     ./security.nix

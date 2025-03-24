@@ -13,6 +13,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     zwift.url = "github:netbrain/zwift";
+    npm-package.url = "github:netbrain/npm-package";
   };
 
   outputs = inputs@{ self, ... }:

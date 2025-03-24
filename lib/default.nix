@@ -18,6 +18,9 @@ rec {
           home-manager.useGlobalPkgs = false;
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "hmbackup";
+
+          # Make sure specialArgs are passed to Home Manager modules
+          home-manager.extraSpecialArgs = { inherit inputs hostname; };
           
           home-manager.users = lib.listToAttrs (lib.map (user: {
             name = user;

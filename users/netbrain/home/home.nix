@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   nixpkgs = {
@@ -41,6 +41,10 @@
     moonlight-qt
     ripgrep
     rip2
+    (inputs.npm-package.lib.${system}.npmPackage {
+      name = "claude";
+      packageName = "@anthropic-ai/claude-code";
+    })
   ];
 
   home.sessionVariables = {
@@ -53,6 +57,7 @@
 
   programs.bash = {
     enable = true;
+    enableCompletion = true;
     bashrcExtra = ''
        
     inbg(){
@@ -69,6 +74,9 @@
     }
     
     export TERM="xterm"
+    
+    # rip shell completion
+    source <(rip completions bash)
     '';
     
     shellAliases = {
