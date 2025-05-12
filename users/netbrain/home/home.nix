@@ -47,6 +47,30 @@
     })
   ];
 
+  services.flatpak.packages = [
+      { appId = "org.mozilla.Thunderbird"; origin = "flathub-beta";  }
+  ];
+
+  services.flatpak.remotes = [{
+    name = "flathub-beta"; location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+  }];
+
+  services.flatpak.overrides = {
+    global = {
+      # Force Wayland by default
+      Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+
+      Environment = {
+        # Fix un-themed cursor in some Wayland apps
+        XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+      };
+    };
+  };
+
+  services.flatpak.update.onActivation = true;
+
+
+
   home.sessionVariables = {
     EDITOR = "hx";
     NIXPKGS_ALLOW_UNFREE = 1;

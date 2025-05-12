@@ -30,6 +30,7 @@
   };
 
   services.printing.enable = true;
+  services.gvfs.enable = true;
 
 services.printing.drivers = [
   (pkgs.writeTextDir "/share/cups/model/Munbyn.ppd"

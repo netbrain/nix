@@ -181,32 +181,32 @@
       rivertile -view-padding 6 -outer-padding 6 &
       
       # Browser
-      riverctl map normal Super W spawn "firefox && riverctl set-focused-tags $((2#1))"
+      # riverctl map normal Super W spawn "firefox && riverctl set-focused-tags $((2#1))"
 
       # Set tags and spawn apps
-      riverctl rule-add -app-id "foot-dev" tags $((2#10))
-      riverctl spawn "foot -a foot-dev"      
+      # riverctl rule-add -app-id "foot-dev" tags $((2#10))
+      # riverctl spawn "foot -a foot-dev"      
 
-      riverctl rule-add -app-id "firefox" tags $((2#1))
-      riverctl spawn "firefox"
+      # riverctl rule-add -app-id "firefox" tags $((2#1))
+      # riverctl spawn "firefox"
 
-      riverctl rule-add -title "Slack" tags $((2#100))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=deabakhnaapgoejhnggflphfcocnkeej"
+      # riverctl rule-add -title "Slack" tags $((2#100))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=deabakhnaapgoejhnggflphfcocnkeej"
 
-      riverctl rule-add -title "Cinny" tags $((2#100))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=bcngdmpegpihnheapppgoniglphkpfhm"
+      # riverctl rule-add -title "Cinny" tags $((2#100))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=bcngdmpegpihnheapppgoniglphkpfhm"
 
-      riverctl rule-add -title "Outlook (PWA)" tags $((2#1000))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=pkooggnaalmfkidjmlhoelhdllpphaga"
+      # riverctl rule-add -title "Outlook (PWA)" tags $((2#1000))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=pkooggnaalmfkidjmlhoelhdllpphaga"
 
-      riverctl rule-add -title "Gmail" tags $((2#1000))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=fmgjjmmmlfnkbppncabfkddbjimcfncm"
+      # riverctl rule-add -title "Gmail" tags $((2#1000))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=fmgjjmmmlfnkbppncabfkddbjimcfncm"
 
-      riverctl rule-add -title "Microsoft Teams" tags $((2#100))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo"
+      # riverctl rule-add -title "Microsoft Teams" tags $((2#100))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=cifhbcnohmdccbgoicgdjpfamggdegmo"
 
-      riverctl rule-add -title "Messenger" tags $((2#100))
-      riverctl spawn "chromium --profile-directory=Default1 --app-id=bbdeiblfgdokhlblpgeaokenkfknecgl"
+      # riverctl rule-add -title "Messenger" tags $((2#100))
+      # riverctl spawn "chromium --profile-directory=Default1 --app-id=bbdeiblfgdokhlblpgeaokenkfknecgl"
 
       # Applets
       riverctl spawn "pasystray"

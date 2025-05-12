@@ -14,6 +14,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     zwift.url = "github:netbrain/zwift";
     npm-package.url = "github:netbrain/npm-package";
+    flatpaks.url = "github:gmodena/nix-flatpak/main";
   };
 
   outputs = inputs@{ self, ... }:

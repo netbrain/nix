@@ -27,7 +27,11 @@ rec {
             value = {
               imports = [
                 # Load stylix
-                inputs.stylix.homeManagerModules.stylix               
+                inputs.stylix.homeManagerModules.stylix
+                
+                # Load flatpak
+                inputs.flatpaks.homeManagerModules.nix-flatpak
+                
                 ../users/${user}/home
                 ../hosts/${hostname}/home
               ];
@@ -49,7 +53,8 @@ rec {
           
           # Allow unfree packages
           nixpkgs.config.allowUnfree = true;
-
+          nixpkgs.config.allowUnsupportedSystem = false;
+          
           # Add each input as a registry (for flakes)
           nix.registry = inputs.nixpkgs.lib.mapAttrs'
             (n: v: inputs.nixpkgs.lib.nameValuePair n { flake = v; })
@@ -74,6 +79,9 @@ rec {
       modules = [
         # Load stylix
         inputs.stylix.homeManagerModules.stylix
+
+        # Load flatpak
+        inputs.flatpaks.homeManagerModules.nix-flatpak
       
         # Load user-specific home configuration (home.nix or home/default.nix)
         ../users/${username}/home
@@ -83,6 +91,7 @@ rec {
           home-manager.useGlobalPkgs = false;
           home-manager.useUserPackages = true;
           nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.allowUnsupportedSystem = false;
           programs.home-manager.enable = true;
 
           # Home Manager-specific settings for the user

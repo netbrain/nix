@@ -36,4 +36,9 @@
     enable = true;
     wlr.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    slack
+    teams-for-linux
+  ];
 }
