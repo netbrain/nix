@@ -31,6 +31,9 @@ rec {
                 
                 # Load flatpak
                 inputs.flatpaks.homeManagerModules.nix-flatpak
+
+                # Load sops
+                inputs.sops-nix.homeManagerModules.sops
                 
                 ../users/${user}/home
                 ../hosts/${hostname}/home
@@ -82,6 +85,9 @@ rec {
 
         # Load flatpak
         inputs.flatpaks.homeManagerModules.nix-flatpak
+
+        # Load sops
+        inputs.sops-nix.homeManagerModules.sops
       
         # Load user-specific home configuration (home.nix or home/default.nix)
         ../users/${username}/home
