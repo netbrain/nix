@@ -1,6 +1,10 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, config, ... }:
 
 {
+  imports = [
+    ../../../secrets/config.nix
+  ];
+
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -31,6 +35,7 @@
     file
     iotop
     tailscale
+    tig
     bitwarden-cli
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
@@ -44,6 +49,10 @@
     (inputs.npm-package.lib.${system}.npmPackage {
       name = "claude";
       packageName = "@anthropic-ai/claude-code";
+    })
+    (inputs.npm-package.lib.${system}.npmPackage {
+      name = "codex";
+      packageName = "@openai/codex";
     })
   ];
 
@@ -69,7 +78,15 @@
 
   services.flatpak.update.onActivation = true;
 
+  sops.secrets = {
+    "openai/key" = {};
+    "gemini/key" = {};
+  };
 
+  sops.templates."secretSessionVariables".content = ''
+   export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
+   export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
+  '';
 
   home.sessionVariables = {
     EDITOR = "hx";
@@ -83,6 +100,13 @@
     enable = true;
     enableCompletion = true;
     bashrcExtra = ''
+
+    # Source sops secrets if the file exists
+    # The actual path to the template file is available via config.sops.templates."secretSessionVariables".path
+    sops_vars_file="${config.sops.templates."secretSessionVariables".path}"
+    if [ -f "$sops_vars_file" ]; then
+      source "$sops_vars_file"
+    fi
        
     inbg(){
       nohup "$@" &>/dev/null & disown

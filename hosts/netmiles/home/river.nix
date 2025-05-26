@@ -4,6 +4,7 @@
     extraSessionVariables = {
       MOZ_ENABLE_WAYLAND = "1";
       NIXOS_OZONE_WL = "1";
+      XDG_CURRENT_DESKTOP="river";
     };
     extraConfig = ''
       # Super+D start instance of wofi
@@ -217,6 +218,20 @@
 
       # Float bitwarden
       riverctl rule-add -title _crx_nngceckbapebfimnlniiiahkandclblb float     
+
+      # Scratchpad
+      scratch_tag=$((1 << 20))
+
+      # Toggle the scratchpad with Super+P
+      riverctl map normal Super P toggle-focused-tags $scratch_tag
+
+      # Send windows to the scratchpad with Super+Shift+P
+      riverctl map normal Super+Shift P set-view-tags $scratch_tag
+
+      # Set spawn tagmask to ensure new windows don't have the scratchpad tag unless
+      # explicitly set.
+      all_but_scratch_tag=$(( ((1 << 32) - 1) ^ $scratch_tag ))
+      riverctl spawn-tagmask $all_but_scratch_tag
      '';
     };
   }
