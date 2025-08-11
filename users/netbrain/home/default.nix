@@ -9,6 +9,7 @@
     ../../../mixins/programs/home/helix.nix
     ./zoxide.nix
     ./stylix.nix
+    ./wrappers.nix
   ];
 }
 
