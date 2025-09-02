@@ -54,6 +54,10 @@
       name = "codex";
       packageName = "@openai/codex";
     })
+    (inputs.npm-package.lib.${system}.npmPackage {
+      name = "gemini";
+      packageName = "@google/gemini-cli";
+    })
   ];
 
   services.flatpak.packages = [
@@ -85,7 +89,7 @@
 
   sops.templates."secretSessionVariables".content = ''
    export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
-   export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
+   #export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
   '';
 
   home.sessionVariables = {

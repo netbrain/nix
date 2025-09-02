@@ -17,6 +17,8 @@
       url."git@github.com:".insteadOf = [ "gh:" "github:" ];
       push.autoSetupRemote = true;
       core.editor = "hx";
+      push.default = "upstream";
+      #branch.autoSetupMerge = "simple";
     };
     includes = [{
       path = "~/.gitconfig-lyse";

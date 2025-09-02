@@ -32,6 +32,7 @@
     MILES_WIFI_PASSWORD = "${config.sops.placeholder."miles/wifi/password"}"
   '';
 
+  networking.networkmanager.plugins = with pkgs; [ networkmanager-openvpn ];
   networking.networkmanager = {
     enable = true;
     ensureProfiles = {
