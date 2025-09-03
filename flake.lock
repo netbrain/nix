@@ -67,6 +67,24 @@
         "type": "github"
       }
     },
+    "bwmenu": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1756924083,
+        "narHash": "sha256-YvpA17UPHhzFZVGK6vJh8gFPZPG4mSqFCwSglyijpDM=",
+        "owner": "netbrain",
+        "repo": "bwmenu",
+        "rev": "3b553606717e71a4fb2d30ff3a056f1a22ecbdac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "netbrain",
+        "repo": "bwmenu",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -210,6 +228,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1756787288,
+        "narHash": "sha256-rw/PHa1cqiePdBxhF66V7R+WAP8WekQ0mCDG4CFqT8Y=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d0fc30899600b9b3466ddb260fd83deb486c32f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1754882787,
         "narHash": "sha256-Y2nY1s+ZS3vkVS72SsEa/zJe+j9JuwLbev4grzcHTA8=",
         "owner": "NixOS",
@@ -224,7 +258,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1741010256,
         "narHash": "sha256-WZNlK/KX7Sni0RyqLSqLPbK8k08Kq7H7RijPJbq9KHM=",
@@ -240,7 +274,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1734435836,
         "narHash": "sha256-kMBQ5PRiFLagltK0sH+08aiNt3zGERC2297iB6vrvlU=",
@@ -258,7 +292,7 @@
     },
     "npm-package": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1741180162,
@@ -301,11 +335,12 @@
     },
     "root": {
       "inputs": {
+        "bwmenu": "bwmenu",
         "disko": "disko",
         "flatpaks": "flatpaks",
         "hardware": "hardware",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "npm-package": "npm-package",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
@@ -464,7 +499,7 @@
     },
     "zwift": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1753371354,

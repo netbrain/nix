@@ -15,6 +15,7 @@
     zwift.url = "github:netbrain/zwift";
     npm-package.url = "github:netbrain/npm-package";
     flatpaks.url = "github:gmodena/nix-flatpak/main";
+    bwmenu.url = "github:netbrain/bwmenu";
   };
 
   outputs = inputs@{ self, ... }:

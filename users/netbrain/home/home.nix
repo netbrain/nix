@@ -37,6 +37,7 @@
     tailscale
     tig
     bitwarden-cli
+    (inputs.bwmenu.packages.${system}.bwmenu)
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
     #}))
