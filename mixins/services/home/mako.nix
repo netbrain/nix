@@ -1,8 +1,10 @@
 {
   services.mako = {
-    defaultTimeout = 10000;
     enable = true;
-    icons = true;
-    layer = "overlay";
+    settings = {
+      icons = true;
+      layer = "overlay";
+      default-timeout = 10000;
+    };
   };
 }

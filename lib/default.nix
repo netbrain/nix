@@ -27,7 +27,7 @@ rec {
             value = {
               imports = [
                 # Load stylix
-                inputs.stylix.homeManagerModules.stylix
+                inputs.stylix.homeModules.stylix
                 
                 # Load flatpak
                 inputs.flatpaks.homeManagerModules.nix-flatpak
@@ -81,7 +81,7 @@ rec {
 
       modules = [
         # Load stylix
-        inputs.stylix.homeManagerModules.stylix
+        inputs.stylix.homeModules.stylix
 
         # Load flatpak
         inputs.flatpaks.homeManagerModules.nix-flatpak

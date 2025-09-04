@@ -1,6 +1,8 @@
+{ pkgs, ... }:
 {
   wayland.windowManager.river = {
     enable = true;
+    package = pkgs.river-classic; 
     extraSessionVariables = {
       MOZ_ENABLE_WAYLAND = "1";
       NIXOS_OZONE_WL = "1";
@@ -220,18 +222,24 @@
       riverctl rule-add -title _crx_nngceckbapebfimnlniiiahkandclblb float     
 
       # Scratchpad
-      scratch_tag=$((1 << 20))
+      scratch_tag=$((1 << 20)) #1048576
 
-      # Toggle the scratchpad with Super+P
-      riverctl map normal Super P toggle-focused-tags $scratch_tag
+      # Super+P: launch bwmenu in foot as floating, visible on all tags
+      riverctl map normal Super P spawn "foot -a bwmenu -t \"Passwords\" -e bwmenu"
 
-      # Send windows to the scratchpad with Super+Shift+P
-      riverctl map normal Super+Shift P set-view-tags $scratch_tag
+      # Toggle the scratchpad with Super+O
+      riverctl map normal Super O toggle-focused-tags $scratch_tag
 
-      # Set spawn tagmask to ensure new windows don't have the scratchpad tag unless
-      # explicitly set.
-      all_but_scratch_tag=$(( ((1 << 32) - 1) ^ $scratch_tag ))
-      riverctl spawn-tagmask $all_but_scratch_tag
+      # Send windows to the scratchpad with Super+Shift+O
+      riverctl map normal Super+Shift O set-view-tags $scratch_tag
+
+      # Ensure new windows don't default to the scratchpad tag unless explicitly set.
+      all_but_scratchpads=$(( ((1 << 32) - 1) ^ ($scratch_tag) ))
+      riverctl spawn-tagmask $all_but_scratchpads
+
+      # Make bwmenu float and be present on all tags
+      riverctl rule-add -app-id "bwmenu" float
+      riverctl rule-add -app-id "bwmenu" tags $all_tags
      '';
     };
   }
