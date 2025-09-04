@@ -10,6 +10,12 @@
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
     };
+    overlays = [
+      (final: prev: {
+        # Expose bwmenu via overlay so it’s available as pkgs.bwmenu
+        bwmenu = inputs.bwmenu.packages.${final.stdenv.hostPlatform.system}.bwmenu;
+      })
+    ];
   };
 
   home = {
@@ -37,7 +43,7 @@
     tailscale
     tig
     bitwarden-cli
-    (inputs.bwmenu.packages.${system}.bwmenu)
+    bwmenu
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
     #}))

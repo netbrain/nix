@@ -183,6 +183,9 @@
 
       rivertile -view-padding 6 -outer-padding 6 &
       
+      # Prewarm bwmenu service at session start
+      riverctl spawn "bwmenu serve"
+      
       # Browser
       # riverctl map normal Super W spawn "firefox && riverctl set-focused-tags $((2#1))"
 
