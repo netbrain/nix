@@ -98,6 +98,10 @@
       }
 
       # Window rules
+      # mnu-drun in foot: float and pin on all workspaces
+      windowrule = float, title:Launcher
+      windowrule = pin, title:Launcher
+      
       # Center specific windows
       windowrule = center 1, ^(.blueman-manager-wrapped)$
       #windowrule = center 1, ^(gnome-calculator|org\.gnome\.Calculator)$
@@ -198,7 +202,7 @@
       bindm = $mainMod, mouse:273, resizewindow
 
       # Application menu
-      bind = $mainMod, D, exec, tofi-drun
+      bind = $mainMod, D, exec, foot -a mnu-drun -t Launcher -e mnu-drun
 
       # Center focused window
       bind = CTRL ALT, C, centerwindow

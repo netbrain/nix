@@ -30,7 +30,7 @@
         };
         terminal = "foot";
       #menu = "wofi --show run | xargs waymsg exec --";
-      menu = "tofi-drun --drun-launch=true";
+      menu = "foot -a mnu-drun -t Launcher -e mnu-drun";
       focus = {
         followMouse = false;
       };
@@ -44,6 +44,7 @@
           { app_id = "pavucontrol"; }
         ];
       };
+      
       window = {
         titlebar = false;
         hideEdgeBorders = "smart";
@@ -70,6 +71,12 @@
           # browser zoom|meet|bluejeans
           #{ command = "inhibit_idle visible"; criteria = { title = "(Blue Jeans)|(Meet)|(Zoom Meeting)"; }; }
           #{ command = "inhibit_idle visible, floating enable"; criteria = { title = "(Sharing Indicator)"; }; }
+
+          # mnu-drun (foot with app_id mnu-drun): float and sticky on all workspaces
+          {
+            command = "floating enable, sticky enable";
+            criteria = { app_id = "mnu-drun"; };
+          }
         ];
       };
      gaps = {

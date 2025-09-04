@@ -2,8 +2,8 @@
   wayland.windowManager.river = {
     enable = true;
     extraConfig = ''
-      # Super+D start instance of wofi
-      riverctl map normal Super D spawn "exec \$(tofi-drun)"
+      # Super+D start mnu-drun in foot (floating, on all tags)
+      riverctl map normal Super D spawn "foot -a mnu-drun -t \"Launcher\" -e mnu-drun"
     
       # Super+Shift+Return to start an instance of foot (https://codeberg.org/dnkl/foot)
       riverctl map normal Super+Shift Return spawn foot
@@ -175,6 +175,10 @@
       riverctl map normal Super X spawn "swaylock --color 3c3836 -F -f"
 
       rivertile -view-padding 6 -outer-padding 6 &
+      
+      # Make mnu-drun float and be present on all tags
+      riverctl rule-add -app-id "mnu-drun" float
+      riverctl rule-add -app-id "mnu-drun" tags $all_tags
       
       # Set tags and spawn apps
       riverctl rule-add -title "Steam Big Picture Mode" fullscreen

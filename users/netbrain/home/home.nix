@@ -12,8 +12,13 @@
     };
     overlays = [
       (final: prev: {
-        # Expose bwmenu via overlay so it’s available as pkgs.bwmenu
-        bwmenu = inputs.bwmenu.packages.${final.stdenv.hostPlatform.system}.bwmenu;
+        # Expose mnu (default aggregates mnu-bw, mnu-run, mnu-drun) and individual binaries
+        mnu     = inputs.mnu.packages.${final.stdenv.hostPlatform.system}.default;
+        mnu-bw  = inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-bw";
+        mnu-run = inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-run";
+        mnu-drun= inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-drun";
+        # Expose lumen (default package)
+        lumen   = inputs.lumen.packages.${final.stdenv.hostPlatform.system}.default;
       })
     ];
   };
@@ -42,8 +47,10 @@
     iotop
     tailscale
     tig
+    warp-terminal
     bitwarden-cli
-    bwmenu
+    mnu
+    lumen
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
     #}))

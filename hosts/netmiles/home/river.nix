@@ -9,8 +9,8 @@
       XDG_CURRENT_DESKTOP="river";
     };
     extraConfig = ''
-      # Super+D start instance of wofi
-      riverctl map normal Super D spawn "exec \$(tofi-drun)"
+      # Super+D start mnu-drun in foot (floating, on all tags)
+      riverctl map normal Super D spawn "foot -a mnu-drun -t \"Launcher\" -e mnu-drun"
     
       # Super+Shift+Return to start an instance of foot (https://codeberg.org/dnkl/foot)
       riverctl map normal Super+Shift Return spawn foot
@@ -183,8 +183,8 @@
 
       rivertile -view-padding 6 -outer-padding 6 &
       
-      # Prewarm bwmenu service at session start
-      riverctl spawn "bwmenu serve"
+      # Prewarm mnu-bw service at session start
+      riverctl spawn "mnu-bw serve"
       
       # Browser
       # riverctl map normal Super W spawn "firefox && riverctl set-focused-tags $((2#1))"
@@ -227,8 +227,8 @@
       # Scratchpad
       scratch_tag=$((1 << 20)) #1048576
 
-      # Super+P: launch bwmenu in foot as floating, visible on all tags
-      riverctl map normal Super P spawn "foot -a bwmenu -t \"Passwords\" -e bwmenu"
+      # Super+P: launch mnu-bw in foot as floating, visible on all tags
+      riverctl map normal Super P spawn "foot -a mnu-bw -t \"Passwords\" -e mnu-bw"
 
       # Toggle the scratchpad with Super+O
       riverctl map normal Super O toggle-focused-tags $scratch_tag
@@ -240,9 +240,13 @@
       all_but_scratchpads=$(( ((1 << 32) - 1) ^ ($scratch_tag) ))
       riverctl spawn-tagmask $all_but_scratchpads
 
-      # Make bwmenu float and be present on all tags
-      riverctl rule-add -app-id "bwmenu" float
-      riverctl rule-add -app-id "bwmenu" tags $all_tags
+      # Make mnu-bw float and be present on all tags
+      riverctl rule-add -app-id "mnu-bw" float
+      riverctl rule-add -app-id "mnu-bw" tags $all_tags
+
+      # Make mnu-drun float and be present on all tags
+      riverctl rule-add -app-id "mnu-drun" float
+      riverctl rule-add -app-id "mnu-drun" tags $all_tags
      '';
     };
   }
