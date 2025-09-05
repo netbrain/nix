@@ -114,7 +114,7 @@
     content = ''
       {
         "provider": "openai",
-        "apiKey": "${config.sops.placeholder."openai/key"}",
+        "api_key": "${config.sops.placeholder."openai/key"}",
         "model": "gpt-4o-mini"
       }
     '';
