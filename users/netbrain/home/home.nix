@@ -47,7 +47,7 @@
     iotop
     tailscale
     tig
-    warp-terminal
+    (pkgs.warp-terminal.override { waylandSupport = true; })
     bitwarden-cli
     mnu
     lumen
@@ -59,7 +59,9 @@
     #}))
     moonlight-qt
     ripgrep
+    fzf
     rip2
+    gitmoji-cli
     (inputs.npm-package.lib.${system}.npmPackage {
       name = "claude";
       packageName = "@anthropic-ai/claude-code";
@@ -105,6 +107,19 @@
    export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
    #export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
   '';
+
+  # Lumen configuration file with OpenAI provider and API key from sops
+  sops.templates."lumen.config.json" = {
+    path = "/home/netbrain/.config/lumen/lumen.config.json";
+    content = ''
+      {
+        "provider": "openai",
+        "apiKey": "${config.sops.placeholder."openai/key"}",
+        "model": "gpt-4o-mini"
+      }
+    '';
+  };
+
 
   home.sessionVariables = {
     EDITOR = "hx";

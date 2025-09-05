@@ -26,7 +26,7 @@
           {
             criteria = "DP-1";
             status = "enable";
-            scale = 1.0;
+            scale = 1.25;
             mode = "3840x2160@60";
             position = "0,0";
           }
