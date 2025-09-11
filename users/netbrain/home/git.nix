@@ -76,22 +76,7 @@
       fi
 
       # Commit body via Lumen explain over staged diff
-      if BODY=$(lumen explain --staged --diff -q "Create a summary of all changes, focus on the most important ones, limit your output to a sensible size, prefer compact over verbose, render as a single list, if scope is present, wrap in parenthesis. Use one of the following types: 
-- docs: Documentation only changes
-- style: Changes that do not affect the meaning of the code
-- refactor: A code change that neither fixes a bug nor adds a feature
-- perf: A code change that improves performance
-- test: Adding missing tests or correcting existing tests
-- build: Changes that affect the build system or external dependencies
-- ci: Changes to our CI configuration files and scripts
-- chore: Other changes that don't modify src or test files
-- revert: Reverts a previous commit
-- feat: A new feature
-- fix: A bug fix
-
-For the icon, pick one from: ''${GITMOJI_LIST}.
-Every list item must be rendered exactly as: 
-'* <icon> <type>[optional scope]: <summarized change description>'" 2>/dev/null); then
+      if BODY=$(lumen explain --staged --diff -q "Format your response so it fits well in the body of a git commit, do not include a heading/title" 2>/dev/null); then
         BODY="$(printf '%s\n' "$BODY" | sed -e 's/[[:space:]]*$//')"
         # Extract only the content after the first occurrence of "Done"
         BODY_TRIMMED="$(printf '%s\n' "$BODY" | awk 'found{print} /Done/{found=1; next}')"

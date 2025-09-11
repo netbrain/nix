@@ -18,6 +18,17 @@
   #   "xe"
   # ];
 
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_12.override {
+    argsOverride = rec {
+      version = "6.16.7";
+      src = pkgs.fetchurl {
+        url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+        sha256 = "sha256-W+PaoflCexvbNMSJTZwa36w4z/Z0N2/gYRowZXKaGoE=";
+      };
+      modDirVersion = version;
+    };
+  });
+
   boot.kernelParams = [
     "quiet"
     "loglevel=3"
