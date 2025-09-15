@@ -6,7 +6,6 @@
       delve                                     # golang debugger
 	    nodePackages.bash-language-server		      # bash
 	    nodePackages.typescript-language-server		# typescript
-      dockerfile-language-server-nodejs		      # dockerfile
 	    yaml-language-server				              # yaml
 	    jdt-language-server				                # java
 	    nodePackages.vscode-json-languageserver		# json
@@ -19,6 +18,11 @@
       dockerfile-language-server                # dockerfile
       omnisharp-roslyn                          # c-sharp
       taplo                                     # toml
+      python313Packages.python-lsp-server       # python
+      python313Packages.python-lsp-ruff
+      python313Packages.jedi-language-server
+      ty
+      ruff
     ];
   };
 }
