@@ -17,6 +17,7 @@
     flatpaks.url = "github:gmodena/nix-flatpak/main";
     mnu.url = "github:netbrain/mnu";
     lumen.url = "github:jnsahaj/lumen";
+    lumen.inputs.nixpkgs.follows ="nixpkgs";
   };
 
   outputs = inputs@{ self, ... }:

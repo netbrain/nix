@@ -16,7 +16,7 @@
       netcoredbg                                # c-sharp dbg
       templ                                     # templ
       vscode-langservers-extracted              # html, css, json, eslint
-      dockerfile-language-server-nodejs         # dockerfile
+      dockerfile-language-server                # dockerfile
       omnisharp-roslyn                          # c-sharp
       taplo                                     # toml
     ];

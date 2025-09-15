@@ -23,6 +23,8 @@
       curl
       dig
       bc
+      clinfo
+      level-zero
     ];
   };
 
