@@ -18,6 +18,7 @@
     mnu.url = "github:netbrain/mnu";
     lumen.url = "github:jnsahaj/lumen";
     lumen.inputs.nixpkgs.follows ="nixpkgs";
+    wrappimage.url = "github:netbrain/wrappimage";
   };
 
   outputs = inputs@{ self, ... }:

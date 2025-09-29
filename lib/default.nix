@@ -34,6 +34,9 @@ rec {
 
                 # Load sops
                 inputs.sops-nix.homeManagerModules.sops
+
+                # Load wrappimage
+                inputs.wrappimage.homeModules.wrappimage
                 
                 ../users/${user}/home
                 ../hosts/${hostname}/home
@@ -88,6 +91,9 @@ rec {
 
         # Load sops
         inputs.sops-nix.homeManagerModules.sops
+
+        # Load wrappimage
+        inputs.wrappimage.homeModules.wrappimage
       
         # Load user-specific home configuration (home.nix or home/default.nix)
         ../users/${username}/home
