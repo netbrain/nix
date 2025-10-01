@@ -86,7 +86,7 @@
   programs.wrappimage = {
     enable = true;
     apps.warp-terminal = {
-      url = "https://releases.warp.dev/stable/v0.2025.09.24.08.11.stable_00/Warp-x86_64.AppImage";
+      url = "https://releases.warp.dev/stable/v0.2025.09.24.08.11.stable_01/Warp-x86_64.AppImage";
       hash = "sha256-PrV7FIMkWE+5vl43uxmwWDhQZi6ynrtR+bQ2gYlpm0U=";
       binName = "warp-terminal";
     };
@@ -152,7 +152,9 @@
     inbg(){
       nohup "$@" &>/dev/null & disown
     }
-
+    
+    rpath() { [ -L "$1" ] && readlink -f "$1" || printf "%s\n" "$1"; }
+    
     #Altibox
     aibencrypt() {
       if [ $# -eq 0 ] || [ $1 = "help" ]; then
@@ -173,9 +175,9 @@
       rmdir = "echo Use 'rip' instead of rmdir.";
       vi = "hx";
       vim = "hx";
-      ".." = "cd .." ;
-      nrs = "sudo nixos-rebuild switch --flake path:/etc/nixos";
-      nrt = "sudo nixos-rebuild test --flake path:/etc/nixos";
+      ".." = "cd ..";
+      nrs = "sudo nixos-rebuild switch --flake path:$(rpath /etc/nixos)";
+      nrt = "sudo nixos-rebuild test --flake path:$(rpath /etc/nixos)";
       ngc = "sudo sh -c 'nix-env --delete-generations old && nix-store --gc && nix-collect-garbage -d'";
       ns = "nix --extra-experimental-features \"nix-command flakes\" search nixpkgs";
       goland = "inbg goland";
