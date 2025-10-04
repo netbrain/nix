@@ -61,6 +61,7 @@
     fzf
     rip2
     gitmoji-cli
+    superfile
     (inputs.npm-package.lib.${system}.npmPackage {
       name = "claude";
       packageName = "@anthropic-ai/claude-code";
