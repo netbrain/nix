@@ -62,6 +62,7 @@
     rip2
     gitmoji-cli
     superfile
+    gh
     (inputs.npm-package.lib.${system}.npmPackage {
       name = "claude";
       packageName = "@anthropic-ai/claude-code";
@@ -110,10 +111,12 @@
   sops.secrets = {
     "openai/key" = {};
     "gemini/key" = {};
+    "anthropic/key" = {};
   };
 
   sops.templates."secretSessionVariables".content = ''
    export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
+   #export ANTHROPIC_API_KEY='${config.sops.placeholder."anthropic/key"}'
    #export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
   '';
 

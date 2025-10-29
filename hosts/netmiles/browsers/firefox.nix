@@ -63,6 +63,11 @@
             install_url = "https://addons.mozilla.org/firefox/downloads/file/4342782/ether_metamask-12.0.6.xpi";
             installation_mode = "force_installed";
           };
+          # Markdown Viewer:
+          "markdown-viewer@outofindex.com" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/markdown-viewer-chrome/latest.xpi";
+            installation_mode = "force_installed";
+          };
         };
   
         /* ---- PREFERENCES ---- */
