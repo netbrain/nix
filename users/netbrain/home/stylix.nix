@@ -9,5 +9,11 @@
     opacity = {
       terminal = 0.8;
     };
+    fonts = {
+      monospace = {
+        package = pkgs.nerd-fonts.noto;
+        name = "NotoSansM Nerd Font";
+      };
+    };
   };
 }

@@ -51,10 +51,10 @@ in
       modules-left = [ "river/tags" ];
       modules-right = [
         "custom/memory-pressure"
+        "battery"
         "cpu"
         "disk"
         "memory"
-        "battery"
         "network"
         "temperature"
         "pulseaudio"
@@ -63,11 +63,11 @@ in
       ];
 
       battery = {
-        format = "{icon} {capacity}%";
-        format-alt = "{icon} {time}";
-        format-charging = "  {capacity}%";
+        format = "{capacity}% {icon}";
+        format-alt = "{time} {icon}";
+        format-charging = "{capacity}% ";
         format-icons = [ "" "" "" "" "" ];
-        format-plugged = " {capacity}%";
+        format-plugged = "{capacity}% ";
         states = {
           critical = 15;
           warning = 30;
@@ -88,7 +88,7 @@ in
       };
 
       cpu = {
-        format = " {icon} {usage}%";
+        format = "  {usage}%";
         tooltip = true;
         states = {
           warning = 70;
@@ -97,7 +97,7 @@ in
       };
 
       disk = {
-        format = " {percentage_used}%";
+        format = "󰋊 {percentage_used}%";
         path = "/";
         tooltip-format = "Used: {used} / {total}";
         states = {
@@ -107,7 +107,7 @@ in
       };
 
       memory = {
-        format = " {percentage}%";
+        format = "󰍛 {percentage}%";
         tooltip-format = "RAM: {used}GiB / {total}GiB";
         states = {
           warning = 70;
@@ -116,8 +116,8 @@ in
       };
 
       network = {
-        format-wifi = "  {essid}";
-        format-ethernet = "  {ipaddr}";
+        format-wifi = "  {essid}";
+        format-ethernet = " {ipaddr}";
         format-disconnected = "󰤭 Disconnected";
         tooltip-format = "{ifname}: {ipaddr}/{cidr}";
         tooltip-format-wifi = "{essid} ({signalStrength}%)\n {bandwidthDownBits}  {bandwidthUpBits}";
@@ -140,8 +140,8 @@ in
       };
 
       clock = {
-        format = " {:%H:%M}";
-        format-alt = " {:%Y-%m-%d}";
+        format = " {:%H:%M}";
+        format-alt = " {:%Y-%m-%d}";
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         calendar = {
           mode = "year";
@@ -160,11 +160,6 @@ in
     }];
 
     style = ''
-      * {
-        font-size: 13pt;
-        font-family: "NotoSansM Nerd Font", monospace;
-      }
-
       #tags button.focused {
         color: #d65d0e;
       }
@@ -190,6 +185,7 @@ in
       /* CPU - Color coded by usage */
       #cpu {
         padding: 0 10px;
+        font-family: "NotoSansM Nerd Font", monospace;
       }
       #cpu.warning {
         color: #fabd2f;
@@ -201,6 +197,7 @@ in
       /* Disk - Color coded by usage */
       #disk {
         padding: 0 10px;
+        font-family: "NotoSansM Nerd Font", monospace;
       }
       #disk.warning {
         color: #fabd2f;
@@ -212,6 +209,7 @@ in
       /* Memory - Color coded by usage */
       #memory {
         padding: 0 10px;
+        font-family: "NotoSansM Nerd Font", monospace;
       }
       #memory.warning {
         color: #fabd2f;
@@ -223,10 +221,31 @@ in
       /* Temperature - Color coded by heat */
       #temperature {
         padding: 0 10px;
+        font-family: "NotoSansM Nerd Font", monospace;
       }
       #temperature.critical {
         color: #fb4934;
         font-weight: bold;
+      }
+
+      /* Network */
+      #network {
+        font-family: "NotoSansM Nerd Font", monospace;
+      }
+
+      /* Clock */
+      #clock {
+        font-family: "NotoSansM Nerd Font", monospace;
+      }
+
+      /* Audio */
+      #pulseaudio {
+        font-family: "NotoSansM Nerd Font", monospace;
+      }
+
+      /* Battery */
+      #battery {
+        font-family: "NotoSansM Nerd Font", monospace;
       }
     '';
   };

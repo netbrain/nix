@@ -42,13 +42,13 @@
       # Super+Return to bump the focused view to the top of the layout stack
       riverctl map normal Super Return zoom
 
-      # Super+H and Super+L to decrease/increase the main ratio of rivertile(1)riverctl map normal Super+D spawn tofi-drun
-      riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
-      riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
+      # Super+H and Super+L to decrease/increase the split ratio
+      riverctl map normal Super H send-layout-cmd bsp-layout "--dec-vsplit .05"
+      riverctl map normal Super L send-layout-cmd bsp-layout "--inc-vsplit .05"
 
-      # Super+Shift+H and Super+Shift+L to increment/decrement the main count of rivertile(1)
-      riverctl map normal Super+Shift H send-layout-cmd rivertile "main-count +1"
-      riverctl map normal Super+Shift L send-layout-cmd rivertile "main-count -1"
+      # Super+Shift+H and Super+Shift+L to adjust horizontal split
+      riverctl map normal Super+Shift H send-layout-cmd bsp-layout "--dec-hsplit .05"
+      riverctl map normal Super+Shift L send-layout-cmd bsp-layout "--inc-hsplit .05"
 
       # Super+Alt+{H,J,K,L} to move views
       riverctl map normal Super+Alt H move left 100
@@ -106,11 +106,8 @@
       # Super+F to toggle fullscreen
       riverctl map normal Super F toggle-fullscreen
 
-      # Super+{Up,Right,Down,Left} to change layout orientation
-      riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
-      riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
-      riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
-      riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
+      # Super+R to reverse window order
+      riverctl map normal Super R send-layout-cmd bsp-layout "--reverse"
 
       # Declare a passthrough mode. This mode has only a single mapping to return to
       # normal mode. This makes it useful for testing a nested wayland compositor
@@ -159,9 +156,9 @@
       # Make all views with app-id "bar" and any title use client-side decorations
       riverctl rule-add -app-id "bar" csd
 
-      # Set the default layout generator to be rivertile and start it.
+      # Set the default layout generator to be bsp-layout and start it.
       # River will send the process group of the init executable SIGTERM on exit.
-      riverctl default-layout rivertile
+      riverctl default-layout bsp-layout
 
       # Keyboard layout
       riverctl keyboard-layout no
@@ -181,7 +178,7 @@
       # Swaylock
       riverctl map normal Super X spawn "swaylock --color 3c3836 -F -f"
 
-      rivertile -view-padding 6 -outer-padding 6 &
+      river-bsp-layout --inner-gap 6 --outer-gap 6 &
       
       # Prewarm mnu-bw service at session start
       riverctl spawn "mnu-bw serve"

@@ -17,6 +17,8 @@
       slurp
       wl-clipboard
       waybar
+      rivercarro
+      river-bsp-layout
       xdg-desktop-portal-wlr # Make screensharing work (https://codeberg.org/river/wiki#why-doesn-t-screensharing-work)
     ];
   };
