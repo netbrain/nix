@@ -35,13 +35,13 @@
       # Super+Return to bump the focused view to the top of the layout stack
       riverctl map normal Super Return zoom
 
-      # Super+H and Super+L to decrease/increase the main ratio of rivertile(1)riverctl map normal Super+D spawn tofi-drun
-      riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
-      riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
+      # Super+H and Super+L to decrease/increase the main ratio
+      riverctl map normal Super H send-layout-cmd rivercarro "main-ratio -0.05"
+      riverctl map normal Super L send-layout-cmd rivercarro "main-ratio +0.05"
 
-      # Super+Shift+H and Super+Shift+L to increment/decrement the main count of rivertile(1)
-      riverctl map normal Super+Shift H send-layout-cmd rivertile "main-count +1"
-      riverctl map normal Super+Shift L send-layout-cmd rivertile "main-count -1"
+      # Super+Shift+H and Super+Shift+L to increment/decrement the main count
+      riverctl map normal Super+Shift H send-layout-cmd rivercarro "main-count +1"
+      riverctl map normal Super+Shift L send-layout-cmd rivercarro "main-count -1"
 
       # Super+Alt+{H,J,K,L} to move views
       riverctl map normal Super+Alt H move left 100
@@ -100,10 +100,10 @@
       riverctl map normal Super F toggle-fullscreen
 
       # Super+{Up,Right,Down,Left} to change layout orientation
-      riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
-      riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
-      riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
-      riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
+      riverctl map normal Super Up    send-layout-cmd rivercarro "main-location top"
+      riverctl map normal Super Right send-layout-cmd rivercarro "main-location right"
+      riverctl map normal Super Down  send-layout-cmd rivercarro "main-location bottom"
+      riverctl map normal Super Left  send-layout-cmd rivercarro "main-location left"
 
       # Declare a passthrough mode. This mode has only a single mapping to return to
       # normal mode. This makes it useful for testing a nested wayland compositor
@@ -152,9 +152,9 @@
       # Make all views with app-id "bar" and any title use client-side decorations
       riverctl rule-add -app-id "bar" csd
 
-      # Set the default layout generator to be rivertile and start it.
+      # Set the default layout generator to be rivercarro and start it.
       # River will send the process group of the init executable SIGTERM on exit.
-      riverctl default-layout rivertile
+      riverctl default-layout rivercarro
 
       # Keyboard layout
       riverctl keyboard-layout no
@@ -174,7 +174,7 @@
       # Swaylock
       riverctl map normal Super X spawn "swaylock --color 3c3836 -F -f"
 
-      rivertile -view-padding 6 -outer-padding 6 &
+      rivercarro -view-padding 6 -outer-padding 6 &
       
       # Make mnu-drun float and be present on all tags
       riverctl rule-add -app-id "mnu-drun" float

@@ -3,6 +3,8 @@
 {
   imports = [
     ../../../secrets/config.nix
+    ../../../secrets/github-secrets.nix
+    ../../../secrets/ssh-secrets.nix
   ];
 
   nixpkgs = {

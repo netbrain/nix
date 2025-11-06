@@ -32,6 +32,9 @@
       [user]
       name = Kim Eik
       email = kim.eik@lyse.no
+
+      [url "git@github.com-lyse:"]
+      insteadOf = https://github.com/
     '';
   };
 

@@ -4,6 +4,7 @@
     ./home.nix
     ./foot.nix
     ./git.nix
+    ./ssh.nix
     ./golang.nix
     ./gtk.nix
     ../../../mixins/programs/home/helix.nix
