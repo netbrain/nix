@@ -35,6 +35,9 @@
 
       [url "git@github.com-lyse:"]
       insteadOf = https://github.com/
+
+      [url "git@github.com-lyse:"]
+      insteadOf = git@github.com:
     '';
   };
 
