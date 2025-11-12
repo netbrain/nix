@@ -41,8 +41,113 @@
     '';
   };
 
-  # Global prepare-commit-msg hook that drafts a subject via Lumen and adds a concise body via Lumen explain
+  # Generic git hook dispatcher that runs hooks from both global and local .d directories
+  home.file.".config/git/hooks/hook-dispatcher" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      # Git Hook Dispatcher
+      # ===================
+      #
+      # This script enables running multiple git hooks from both global and local directories.
+      # It's designed to be symlinked by specific hook names (e.g., prepare-commit-msg, pre-commit).
+      #
+      # DIRECTORY STRUCTURE:
+      #   Global hooks: ~/.config/git/hooks/<hook-name>.d/
+      #   Local hooks:  .git/hooks/<hook-name>.d/
+      #
+      # EXECUTION ORDER:
+      #   1. Global hooks run first (alphabetically)
+      #   2. Local hooks run second (alphabetically)
+      #   3. If a local hook has the same filename as a global hook, the global hook is skipped
+      #
+      # USAGE:
+      #   Add global hooks:
+      #     Create executable files in ~/.config/git/hooks/<hook-name>.d/
+      #     Example: ~/.config/git/hooks/prepare-commit-msg.d/lumen-commit-msg
+      #
+      #   Add local repo-specific hooks:
+      #     Create executable files in .git/hooks/<hook-name>.d/
+      #     Example: .git/hooks/prepare-commit-msg.d/custom-validation
+      #
+      #   Override global hook:
+      #     Create a local hook with the same filename as the global hook
+      #     Example: .git/hooks/prepare-commit-msg.d/lumen-commit-msg overrides the global one
+      #
+      #   Add new hook types:
+      #     Create a symlink: ln -s hook-dispatcher ~/.config/git/hooks/pre-commit
+      #     Add hooks to: ~/.config/git/hooks/pre-commit.d/
+      #
+      # ERROR HANDLING:
+      #   If any hook exits with non-zero status, execution stops and git aborts the operation
+      #
+      # NOTES:
+      #   - Hooks must be executable (chmod +x)
+      #   - Both regular files and symlinks are supported
+      #   - Non-executable files are silently skipped
+      #   - Alphabetical ordering allows numeric prefixes for explicit ordering (e.g., 10-first, 20-second)
+
+      # Determine which hook was called (e.g., prepare-commit-msg, pre-commit, etc.)
+      HOOK_NAME="$(basename "$0")"
+
+      # Get the git repository root
+      GIT_DIR="$(git rev-parse --git-dir 2>/dev/null || echo "")"
+
+      # Define hook directories
+      GLOBAL_HOOKS_DIR="${config.home.homeDirectory}/.config/git/hooks/''${HOOK_NAME}.d"
+      LOCAL_HOOKS_DIR="''${GIT_DIR}/hooks/''${HOOK_NAME}.d"
+
+      # Collect all hook files
+      declare -A global_hooks
+      declare -A local_hooks
+
+      # Scan global hooks directory
+      if [ -d "$GLOBAL_HOOKS_DIR" ]; then
+        while IFS= read -r -d "" hook; do
+          [ -x "$hook" ] || continue
+          hook_basename="$(basename "$hook")"
+          global_hooks["$hook_basename"]="$hook"
+        done < <(find "$GLOBAL_HOOKS_DIR" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
+      fi
+
+      # Scan local hooks directory
+      if [ -d "$LOCAL_HOOKS_DIR" ]; then
+        while IFS= read -r -d "" hook; do
+          [ -x "$hook" ] || continue
+          hook_basename="$(basename "$hook")"
+          local_hooks["$hook_basename"]="$hook"
+          # Remove global hook with same name (local overrides global)
+          unset global_hooks["$hook_basename"]
+        done < <(find "$LOCAL_HOOKS_DIR" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
+      fi
+
+      # Run global hooks (in alphabetical order, excluding overridden ones)
+      for hook_name in "''${!global_hooks[@]}"; do
+        echo "$hook_name"
+      done | sort | while IFS= read -r hook_name; do
+        "''${global_hooks[$hook_name]}" "$@" || exit $?
+      done
+
+      # Run local hooks (in alphabetical order)
+      for hook_name in "''${!local_hooks[@]}"; do
+        echo "$hook_name"
+      done | sort | while IFS= read -r hook_name; do
+        "''${local_hooks[$hook_name]}" "$@" || exit $?
+      done
+
+      exit 0
+    '';
+  };
+
+  # Symlink prepare-commit-msg to the dispatcher
   home.file.".config/git/hooks/prepare-commit-msg" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/hooks/hook-dispatcher";
+  };
+
+  # Lumen-based commit message generation hook
+  home.file.".config/git/hooks/prepare-commit-msg.d/lumen-commit-msg" = {
     executable = true;
     text = ''
       #!/usr/bin/env bash
