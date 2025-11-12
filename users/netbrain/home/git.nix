@@ -114,6 +114,7 @@
       #   - Non-executable files are silently skipped
       #   - Alphabetical ordering allows numeric prefixes for explicit ordering (e.g., 10-first, 20-second)
       #   - The .d suffix is optional but supported for backward compatibility
+      #   - stdin is captured and replayed to each hook (important for pre-push, post-rewrite, etc.)
 
       # Determine which hook was called (e.g., prepare-commit-msg, pre-commit, etc.)
       HOOK_NAME="$(basename "$0")"
@@ -127,6 +128,19 @@
       GLOBAL_HOOK_BASE="${config.home.homeDirectory}/.config/git/hooks/''${HOOK_NAME}"
       LOCAL_HOOK_BASE="''${GIT_DIR}/hooks/''${HOOK_NAME}"
       COMMON_HOOK_BASE="''${GIT_COMMON_DIR}/hooks/''${HOOK_NAME}"
+
+      # Capture stdin to a temporary file for hooks that consume it (e.g., pre-push, post-rewrite)
+      # This allows multiple hooks to read the same stdin data
+      STDIN_FILE=""
+      if [ -t 0 ]; then
+        # stdin is a terminal (interactive), no need to capture
+        :
+      else
+        # stdin has data, capture it to a temporary file
+        STDIN_FILE="$(mktemp)"
+        cat > "$STDIN_FILE"
+        trap 'rm -f "$STDIN_FILE"' EXIT
+      fi
 
       # Collect all hook files
       declare -A global_hooks
@@ -203,27 +217,40 @@
         done
       fi
 
+      # Function to run a hook with proper stdin handling
+      run_hook() {
+        local hook_path="$1"
+        shift
+        if [ -n "$STDIN_FILE" ]; then
+          # Pass captured stdin to the hook
+          "$hook_path" "$@" < "$STDIN_FILE" || return $?
+        else
+          # No stdin to pass
+          "$hook_path" "$@" || return $?
+        fi
+      }
+
       # Run hooks in order: global -> common -> local (alphabetically within each)
 
       # Run global hooks (in alphabetical order, excluding overridden ones)
       for hook_name in "''${!global_hooks[@]}"; do
         echo "$hook_name"
       done | sort | while IFS= read -r hook_name; do
-        "''${global_hooks[$hook_name]}" "$@" || exit $?
+        run_hook "''${global_hooks[$hook_name]}" "$@" || exit $?
       done
 
       # Run common hooks (shared across worktrees)
       for hook_name in "''${!common_hooks[@]}"; do
         echo "$hook_name"
       done | sort | while IFS= read -r hook_name; do
-        "''${common_hooks[$hook_name]}" "$@" || exit $?
+        run_hook "''${common_hooks[$hook_name]}" "$@" || exit $?
       done
 
       # Run local worktree-specific hooks
       for hook_name in "''${!local_hooks[@]}"; do
         echo "$hook_name"
       done | sort | while IFS= read -r hook_name; do
-        "''${local_hooks[$hook_name]}" "$@" || exit $?
+        run_hook "''${local_hooks[$hook_name]}" "$@" || exit $?
       done
 
       exit 0
