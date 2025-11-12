@@ -143,18 +143,22 @@
             hook_basename="$(basename "$hook")"
             hooks_array["$hook_basename"]="$hook"
           done < <(find "$base_path" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
-        # Check if it's a single executable file
-        elif [ -x "$base_path" ]; then
-          hook_basename="$(basename "$base_path")"
-          hooks_array["$hook_basename"]="$base_path"
+        # For single file mode: only scan if it exists in .git/hooks (local), not global
+        # This prevents the dispatcher from trying to execute itself
         fi
       }
 
-      # Scan global hooks
+      # Scan global hooks (skip single file mode for global to avoid recursion)
       scan_hooks "$GLOBAL_HOOK_BASE" global_hooks
 
-      # Scan local hooks and remove overridden global hooks
+      # Scan local hooks
       scan_hooks "$LOCAL_HOOK_BASE" local_hooks
+
+      # Also check if local hook exists as a single file (not possible for global due to dispatcher)
+      if [ -x "$LOCAL_HOOK_BASE" ] && [ -f "$LOCAL_HOOK_BASE" ] && [ ! -L "$LOCAL_HOOK_BASE" ]; then
+        hook_basename="$(basename "$LOCAL_HOOK_BASE")"
+        local_hooks["$hook_basename"]="$LOCAL_HOOK_BASE"
+      fi
 
       # Check if .skip-global marker exists to skip all global hooks
       SKIP_GLOBAL=false
@@ -191,10 +195,15 @@
     '';
   };
 
-  # Symlink prepare-commit-msg to the dispatcher
-  home.file.".config/git/hooks/prepare-commit-msg" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/git/hooks/hook-dispatcher";
-  };
+  # Symlink common git hooks to the dispatcher
+  # Note: We reference the dispatcher file directly so all hooks share the same code
+  home.file.".config/git/hooks/pre-commit".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/prepare-commit-msg".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/commit-msg".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/post-commit".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/pre-push".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/post-checkout".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
+  home.file.".config/git/hooks/post-merge".source = config.home.file.".config/git/hooks/hook-dispatcher".source;
 
   # Lumen-based commit message generation hook
   home.file.".config/git/hooks/prepare-commit-msg.d/lumen-commit-msg" = {
