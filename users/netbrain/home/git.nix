@@ -58,21 +58,26 @@
       # DIRECTORY STRUCTURE:
       #   Single hook mode:
       #     Global: ~/.config/git/hooks/<hook-name>
-      #     Local:  .git/hooks/<hook-name>
+      #     Common: .git/hooks/<hook-name> (shared across worktrees)
+      #     Local:  .git/worktrees/<name>/hooks/<hook-name> (worktree-specific)
       #
       #   Multiple hook mode:
       #     Global: ~/.config/git/hooks/<hook-name>/ (directory with multiple scripts)
-      #     Local:  .git/hooks/<hook-name>/ (directory with multiple scripts)
+      #     Common: .git/hooks/<hook-name>/ (shared across worktrees)
+      #     Local:  .git/worktrees/<name>/hooks/<hook-name>/ (worktree-specific)
       #
       #   Legacy .d directory mode (still supported):
       #     Global: ~/.config/git/hooks/<hook-name>.d/
-      #     Local:  .git/hooks/<hook-name>.d/
+      #     Common: .git/hooks/<hook-name>.d/
+      #     Local:  .git/worktrees/<name>/hooks/<hook-name>.d/
       #
       # EXECUTION ORDER:
       #   1. Global hooks run first (alphabetically if directory)
-      #   2. Local hooks run second (alphabetically if directory)
-      #   3. If a local hook has the same filename as a global hook, the global hook is skipped
-      #   4. If .skip-global marker exists, all global hooks are skipped
+      #   2. Common hooks run second (shared across worktrees, alphabetically if directory)
+      #   3. Local hooks run third (worktree-specific, alphabetically if directory)
+      #   4. If a local/common hook has the same filename as a global hook, the global hook is skipped
+      #   5. If a local hook has the same filename as a common hook, the common hook is skipped
+      #   6. If .skip-global marker exists, all global hooks are skipped
       #
       # USAGE:
       #   Single global hook:
@@ -113,15 +118,19 @@
       # Determine which hook was called (e.g., prepare-commit-msg, pre-commit, etc.)
       HOOK_NAME="$(basename "$0")"
 
-      # Get the git repository root
+      # Get the git repository directories
+      # For worktrees, --git-dir returns the worktree-specific dir, --git-common-dir returns shared dir
       GIT_DIR="$(git rev-parse --git-dir 2>/dev/null || echo "")"
+      GIT_COMMON_DIR="$(git rev-parse --git-common-dir 2>/dev/null || echo "$GIT_DIR")"
 
       # Define hook paths
       GLOBAL_HOOK_BASE="${config.home.homeDirectory}/.config/git/hooks/''${HOOK_NAME}"
       LOCAL_HOOK_BASE="''${GIT_DIR}/hooks/''${HOOK_NAME}"
+      COMMON_HOOK_BASE="''${GIT_COMMON_DIR}/hooks/''${HOOK_NAME}"
 
       # Collect all hook files
       declare -A global_hooks
+      declare -A common_hooks
       declare -A local_hooks
 
       # Function to scan a hook location (supports file, directory, or .d directory)
@@ -151,10 +160,20 @@
       # Scan global hooks (skip single file mode for global to avoid recursion)
       scan_hooks "$GLOBAL_HOOK_BASE" global_hooks
 
-      # Scan local hooks
+      # Scan common hooks (shared across worktrees) if different from local
+      if [ "$GIT_COMMON_DIR" != "$GIT_DIR" ]; then
+        scan_hooks "$COMMON_HOOK_BASE" common_hooks
+        # Also check for single file in common dir
+        if [ -x "$COMMON_HOOK_BASE" ] && [ -f "$COMMON_HOOK_BASE" ] && [ ! -L "$COMMON_HOOK_BASE" ]; then
+          hook_basename="$(basename "$COMMON_HOOK_BASE")"
+          common_hooks["$hook_basename"]="$COMMON_HOOK_BASE"
+        fi
+      fi
+
+      # Scan worktree-specific local hooks
       scan_hooks "$LOCAL_HOOK_BASE" local_hooks
 
-      # Also check if local hook exists as a single file (not possible for global due to dispatcher)
+      # Also check if local hook exists as a single file
       if [ -x "$LOCAL_HOOK_BASE" ] && [ -f "$LOCAL_HOOK_BASE" ] && [ ! -L "$LOCAL_HOOK_BASE" ]; then
         hook_basename="$(basename "$LOCAL_HOOK_BASE")"
         local_hooks["$hook_basename"]="$LOCAL_HOOK_BASE"
@@ -162,20 +181,29 @@
 
       # Check if .skip-global marker exists to skip all global hooks
       SKIP_GLOBAL=false
-      if [ -f "''${LOCAL_HOOK_BASE}/.skip-global" ] || [ -f "''${LOCAL_HOOK_BASE}.d/.skip-global" ]; then
+      if [ -f "''${LOCAL_HOOK_BASE}/.skip-global" ] || [ -f "''${LOCAL_HOOK_BASE}.d/.skip-global" ] || \
+         [ -f "''${COMMON_HOOK_BASE}/.skip-global" ] || [ -f "''${COMMON_HOOK_BASE}.d/.skip-global" ]; then
         SKIP_GLOBAL=true
       fi
 
-      # Remove overridden global hooks (matching filenames or skip-global marker)
+      # Remove overridden hooks
+      # Local hooks override common hooks, common hooks override global hooks
       if [ "$SKIP_GLOBAL" = true ]; then
         # Skip all global hooks
         global_hooks=()
       else
-        # Only skip global hooks with matching local filenames
-        for hook_name in "''${!local_hooks[@]}"; do
+        # Common hooks override global hooks with matching names
+        for hook_name in "''${!common_hooks[@]}"; do
           unset global_hooks["$hook_name"]
         done
+        # Local hooks override both common and global hooks with matching names
+        for hook_name in "''${!local_hooks[@]}"; do
+          unset global_hooks["$hook_name"]
+          unset common_hooks["$hook_name"]
+        done
       fi
+
+      # Run hooks in order: global -> common -> local (alphabetically within each)
 
       # Run global hooks (in alphabetical order, excluding overridden ones)
       for hook_name in "''${!global_hooks[@]}"; do
@@ -184,7 +212,14 @@
         "''${global_hooks[$hook_name]}" "$@" || exit $?
       done
 
-      # Run local hooks (in alphabetical order)
+      # Run common hooks (shared across worktrees)
+      for hook_name in "''${!common_hooks[@]}"; do
+        echo "$hook_name"
+      done | sort | while IFS= read -r hook_name; do
+        "''${common_hooks[$hook_name]}" "$@" || exit $?
+      done
+
+      # Run local worktree-specific hooks
       for hook_name in "''${!local_hooks[@]}"; do
         echo "$hook_name"
       done | sort | while IFS= read -r hook_name; do
