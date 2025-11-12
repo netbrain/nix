@@ -7,6 +7,7 @@
     extraOptions = ''--config-file=${
       pkgs.writeText "daemon.json" (builtins.toJSON {
         features = { buildkit = true; };
+        dns = [ "8.8.8.8" "8.8.4.4" ];
       })
     }'';
   };
