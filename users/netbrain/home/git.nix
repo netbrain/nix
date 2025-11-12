@@ -51,34 +51,49 @@
       # Git Hook Dispatcher
       # ===================
       #
-      # This script enables running multiple git hooks from both global and local directories.
-      # It's designed to be symlinked by specific hook names (e.g., prepare-commit-msg, pre-commit).
+      # This script enables running git hooks in two modes:
+      # 1. Single hook mode: If <hook-name> is an executable file, run it
+      # 2. Multiple hook mode: If <hook-name> is a directory, run all executables inside
       #
       # DIRECTORY STRUCTURE:
-      #   Global hooks: ~/.config/git/hooks/<hook-name>.d/
-      #   Local hooks:  .git/hooks/<hook-name>.d/
+      #   Single hook mode:
+      #     Global: ~/.config/git/hooks/<hook-name>
+      #     Local:  .git/hooks/<hook-name>
+      #
+      #   Multiple hook mode:
+      #     Global: ~/.config/git/hooks/<hook-name>/ (directory with multiple scripts)
+      #     Local:  .git/hooks/<hook-name>/ (directory with multiple scripts)
+      #
+      #   Legacy .d directory mode (still supported):
+      #     Global: ~/.config/git/hooks/<hook-name>.d/
+      #     Local:  .git/hooks/<hook-name>.d/
       #
       # EXECUTION ORDER:
-      #   1. Global hooks run first (alphabetically)
-      #   2. Local hooks run second (alphabetically)
+      #   1. Global hooks run first (alphabetically if directory)
+      #   2. Local hooks run second (alphabetically if directory)
       #   3. If a local hook has the same filename as a global hook, the global hook is skipped
+      #   4. Single file mode: If local hook exists as file, global hook is skipped
       #
       # USAGE:
-      #   Add global hooks:
-      #     Create executable files in ~/.config/git/hooks/<hook-name>.d/
-      #     Example: ~/.config/git/hooks/prepare-commit-msg.d/lumen-commit-msg
+      #   Single global hook:
+      #     Create ~/.config/git/hooks/<hook-name> as an executable file
+      #     Example: ~/.config/git/hooks/prepare-commit-msg
       #
-      #   Add local repo-specific hooks:
-      #     Create executable files in .git/hooks/<hook-name>.d/
-      #     Example: .git/hooks/prepare-commit-msg.d/custom-validation
+      #   Multiple global hooks:
+      #     Create ~/.config/git/hooks/<hook-name>/ as a directory
+      #     Add executable files inside
+      #     Example: ~/.config/git/hooks/prepare-commit-msg/lumen-commit-msg
+      #
+      #   Single local hook:
+      #     Create .git/hooks/<hook-name> as an executable file
+      #
+      #   Multiple local hooks:
+      #     Create .git/hooks/<hook-name>/ as a directory
+      #     Example: .git/hooks/prepare-commit-msg/custom-validation
       #
       #   Override global hook:
-      #     Create a local hook with the same filename as the global hook
-      #     Example: .git/hooks/prepare-commit-msg.d/lumen-commit-msg overrides the global one
-      #
-      #   Add new hook types:
-      #     Create a symlink: ln -s hook-dispatcher ~/.config/git/hooks/pre-commit
-      #     Add hooks to: ~/.config/git/hooks/pre-commit.d/
+      #     In directory mode: Create local hook with same filename as global
+      #     In single mode: Local file automatically overrides global file
       #
       # ERROR HANDLING:
       #   If any hook exits with non-zero status, execution stops and git aborts the operation
@@ -88,6 +103,7 @@
       #   - Both regular files and symlinks are supported
       #   - Non-executable files are silently skipped
       #   - Alphabetical ordering allows numeric prefixes for explicit ordering (e.g., 10-first, 20-second)
+      #   - The .d suffix is optional but supported for backward compatibility
 
       # Determine which hook was called (e.g., prepare-commit-msg, pre-commit, etc.)
       HOOK_NAME="$(basename "$0")"
@@ -95,33 +111,48 @@
       # Get the git repository root
       GIT_DIR="$(git rev-parse --git-dir 2>/dev/null || echo "")"
 
-      # Define hook directories
-      GLOBAL_HOOKS_DIR="${config.home.homeDirectory}/.config/git/hooks/''${HOOK_NAME}.d"
-      LOCAL_HOOKS_DIR="''${GIT_DIR}/hooks/''${HOOK_NAME}.d"
+      # Define hook paths
+      GLOBAL_HOOK_BASE="${config.home.homeDirectory}/.config/git/hooks/''${HOOK_NAME}"
+      LOCAL_HOOK_BASE="''${GIT_DIR}/hooks/''${HOOK_NAME}"
 
       # Collect all hook files
       declare -A global_hooks
       declare -A local_hooks
 
-      # Scan global hooks directory
-      if [ -d "$GLOBAL_HOOKS_DIR" ]; then
-        while IFS= read -r -d "" hook; do
-          [ -x "$hook" ] || continue
-          hook_basename="$(basename "$hook")"
-          global_hooks["$hook_basename"]="$hook"
-        done < <(find "$GLOBAL_HOOKS_DIR" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
-      fi
+      # Function to scan a hook location (supports file, directory, or .d directory)
+      scan_hooks() {
+        local base_path="$1"
+        local -n hooks_array="$2"  # nameref to associate array
 
-      # Scan local hooks directory
-      if [ -d "$LOCAL_HOOKS_DIR" ]; then
-        while IFS= read -r -d "" hook; do
-          [ -x "$hook" ] || continue
-          hook_basename="$(basename "$hook")"
-          local_hooks["$hook_basename"]="$hook"
-          # Remove global hook with same name (local overrides global)
-          unset global_hooks["$hook_basename"]
-        done < <(find "$LOCAL_HOOKS_DIR" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
-      fi
+        # Check .d directory first (legacy support)
+        if [ -d "''${base_path}.d" ]; then
+          while IFS= read -r -d "" hook; do
+            [ -x "$hook" ] || continue
+            hook_basename="$(basename "$hook")"
+            hooks_array["$hook_basename"]="$hook"
+          done < <(find "''${base_path}.d" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
+        # Check if it's a directory (without .d)
+        elif [ -d "$base_path" ]; then
+          while IFS= read -r -d "" hook; do
+            [ -x "$hook" ] || continue
+            hook_basename="$(basename "$hook")"
+            hooks_array["$hook_basename"]="$hook"
+          done < <(find "$base_path" -maxdepth 1 \( -type f -o -type l \) -print0 | sort -z)
+        # Check if it's a single executable file
+        elif [ -x "$base_path" ]; then
+          hook_basename="$(basename "$base_path")"
+          hooks_array["$hook_basename"]="$base_path"
+        fi
+      }
+
+      # Scan global hooks
+      scan_hooks "$GLOBAL_HOOK_BASE" global_hooks
+
+      # Scan local hooks and remove overridden global hooks
+      scan_hooks "$LOCAL_HOOK_BASE" local_hooks
+      for hook_name in "''${!local_hooks[@]}"; do
+        unset global_hooks["$hook_name"]
+      done
 
       # Run global hooks (in alphabetical order, excluding overridden ones)
       for hook_name in "''${!global_hooks[@]}"; do
