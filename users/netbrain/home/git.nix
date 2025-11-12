@@ -72,7 +72,7 @@
       #   1. Global hooks run first (alphabetically if directory)
       #   2. Local hooks run second (alphabetically if directory)
       #   3. If a local hook has the same filename as a global hook, the global hook is skipped
-      #   4. Single file mode: If local hook exists as file, global hook is skipped
+      #   4. If .skip-global marker exists, all global hooks are skipped
       #
       # USAGE:
       #   Single global hook:
@@ -91,9 +91,14 @@
       #     Create .git/hooks/<hook-name>/ as a directory
       #     Example: .git/hooks/prepare-commit-msg/custom-validation
       #
-      #   Override global hook:
-      #     In directory mode: Create local hook with same filename as global
-      #     In single mode: Local file automatically overrides global file
+      #   Override specific global hook:
+      #     Create a local hook with the same filename as the global hook
+      #     Example: .git/hooks/prepare-commit-msg/lumen-commit-msg overrides global lumen-commit-msg
+      #
+      #   Skip all global hooks:
+      #     Create .git/hooks/<hook-name>/.skip-global (empty file)
+      #     Example: touch .git/hooks/prepare-commit-msg/.skip-global
+      #     Works with both directory and .d directory modes
       #
       # ERROR HANDLING:
       #   If any hook exits with non-zero status, execution stops and git aborts the operation
@@ -150,9 +155,23 @@
 
       # Scan local hooks and remove overridden global hooks
       scan_hooks "$LOCAL_HOOK_BASE" local_hooks
-      for hook_name in "''${!local_hooks[@]}"; do
-        unset global_hooks["$hook_name"]
-      done
+
+      # Check if .skip-global marker exists to skip all global hooks
+      SKIP_GLOBAL=false
+      if [ -f "''${LOCAL_HOOK_BASE}/.skip-global" ] || [ -f "''${LOCAL_HOOK_BASE}.d/.skip-global" ]; then
+        SKIP_GLOBAL=true
+      fi
+
+      # Remove overridden global hooks (matching filenames or skip-global marker)
+      if [ "$SKIP_GLOBAL" = true ]; then
+        # Skip all global hooks
+        global_hooks=()
+      else
+        # Only skip global hooks with matching local filenames
+        for hook_name in "''${!local_hooks[@]}"; do
+          unset global_hooks["$hook_name"]
+        done
+      fi
 
       # Run global hooks (in alphabetical order, excluding overridden ones)
       for hook_name in "''${!global_hooks[@]}"; do
