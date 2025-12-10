@@ -8,6 +8,7 @@
     ./golang.nix
     ./gtk.nix
     ../../../mixins/programs/home/helix.nix
+    ./zed.nix
     ./zoxide.nix
     ./stylix.nix
     ./wrappers.nix
