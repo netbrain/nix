@@ -29,10 +29,17 @@
     enable = true;
   };
 
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
+
   services.printing.enable = true;
   services.gvfs.enable = true;
 
 services.printing.drivers = [
+  pkgs.epson-escpr
+  pkgs.epson-escpr2
   (pkgs.writeTextDir "/share/cups/model/Munbyn.ppd"
     (builtins.readFile ./ppd/Munbyn_Label_Printer.ppd))
   (pkgs.runCommand "rastertolabel-dir" {
@@ -71,13 +78,14 @@ EOF
 
 
   hardware.printers = {
-    #ensurePrinters = [
-    #  {
-    #    name = "Munbyn";
-    #    location = "Home";
-    #    deviceUri = "usb://Printer/Printer?serial=941P242115892";
-    #    model = "Munbyn_Label_Printer.ppd";
-    #  }
-    #];
+    ensurePrinters = [
+      {
+        name = "Epson-ET-2860";
+        location = "Network";
+        deviceUri = "ipp://EPSONDC9C15.local:631/ipp/print";
+        model = "epson-inkjet-printer-escpr/Epson-ET-2860_Series-epson-escpr-en.ppd";
+      }
+    ];
+    ensureDefaultPrinter = "Epson-ET-2860";
   };
 }

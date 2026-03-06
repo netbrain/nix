@@ -98,7 +98,7 @@
             never-default = "true";
             ignore-auto-dns = "true";
             dns = "10.11.1.20;10.11.0.20;";
-            dns-search = "lysetele.net;lysetele.io;aibservers.local;altibox.ad;lyse.no;datadammen.no;datadammentest.no;sap.local;in-addr.arpa;ip6.arpa;lyse.mgmt;altibox.net;snartibox.no;snartibox.net;altibox.no;altibox.cloud;";
+            dns-search = "lysetele.net;lysetele.io;lysetele.at;aibservers.local;altibox.ad;lyse.no;datadammen.no;datadammentest.no;sap.local;in-addr.arpa;ip6.arpa;lyse.mgmt;altibox.net;snartibox.no;snartibox.net;altibox.no;altibox.cloud;";
           };
           ipv6 = {
             addr-gen-mode = "stable-privacy";

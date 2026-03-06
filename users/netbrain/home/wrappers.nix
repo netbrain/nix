@@ -1,7 +1,85 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.file = {
+    ".local/bin/bw-sudo" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        BW="${pkgs.bitwarden-cli}/bin/bw"
+        KEYCTL="${pkgs.keyutils}/bin/keyctl"
+        PINENTRY="${pkgs.pinentry-qt}/bin/pinentry"
+        KEY_DESC="bw-sudo:session"
+
+        get_session() {
+          local key_id
+          key_id=$($KEYCTL search @s user "$KEY_DESC" 2>/dev/null) || true
+          if [ -n "$key_id" ]; then
+            $KEYCTL pipe "$key_id" 2>/dev/null || true
+          fi
+        }
+
+        store_session() {
+          echo -n "$1" | $KEYCTL padd user "$KEY_DESC" @s >/dev/null
+        }
+
+        clear_session() {
+          local key_id
+          key_id=$($KEYCTL search @s user "$KEY_DESC" 2>/dev/null) || true
+          if [ -n "$key_id" ]; then
+            $KEYCTL unlink "$key_id" @s 2>/dev/null || true
+          fi
+        }
+
+        get_master_password() {
+          local response
+          response=$(printf "SETDESC Bitwarden Master Password\nSETPROMPT Password:\nGETPIN\n" | $PINENTRY 2>/dev/null)
+          echo "$response" | grep "^D " | sed 's/^D //'
+        }
+
+        case "''${1:-}" in
+          lock)
+            clear_session
+            $BW lock >/dev/null 2>&1 || true
+            echo "bw-sudo: session locked"
+            exit 0
+            ;;
+          status)
+            session=$(get_session)
+            if [ -n "$session" ] && BW_SESSION="$session" $BW unlock --check >/dev/null 2>&1; then
+              echo "bw-sudo: unlocked"
+            else
+              echo "bw-sudo: locked"
+            fi
+            exit 0
+            ;;
+        esac
+
+        session=$(get_session)
+
+        if [ -z "$session" ] || ! BW_SESSION="$session" $BW unlock --check >/dev/null 2>&1; then
+          master_pw=$(get_master_password)
+          if [ -z "$master_pw" ]; then
+            echo "bw-sudo: no password provided" >&2
+            exit 1
+          fi
+
+          session=$(echo "$master_pw" | $BW unlock --raw 2>/dev/null) || {
+            echo "bw-sudo: unlock failed" >&2
+            exit 1
+          }
+
+          store_session "$session"
+        fi
+
+        export BW_SESSION="$session"
+        exec $BW "$@"
+      '';
+    };
+
+
     ".local/bin/rsync-resume" = {
       executable = true;
       text = ''
