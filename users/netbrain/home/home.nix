@@ -78,6 +78,14 @@
       name = "gemini";
       packageName = "@google/gemini-cli";
     })
+    (inputs.npm-package.lib.${system}.npmPackage {
+      name = "gsd";
+      packageName = "get-shit-done-cc";
+    })
+    (inputs.npm-package.lib.${system}.npmPackage {
+      name = "paul";
+      packageName = "paul-framework";
+    })
   ];
 
   services.flatpak.packages = [

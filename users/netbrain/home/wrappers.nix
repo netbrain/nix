@@ -149,6 +149,10 @@
           REPO_URL=$(git remote -v 2>/dev/null | awk '{print $2}' | head -n1 || echo "")
         fi
 
+        # Rebuild claude-code image
+        echo "Building claude-code image..."
+        podman build -t claude-code "$HOME/dev/dockerfiles/claude-code"
+
         # Create persistent Nix store volume if it doesn't exist
         # This volume is shared across all containers for efficiency
         if ! podman volume exists nix-store 2>/dev/null; then
@@ -171,6 +175,20 @@
         # Mount local directory or use REPO_URL
         if [ -n "$LOCAL_DIR" ]; then
           PODMAN_CMD+=(-v "$LOCAL_DIR:/workspace:rw")
+          # Map container UID 1000 (podman) to host UID 1000 so bind-mounted files
+          # have correct ownership. Without this, rootless podman's sub-UID remapping
+          # causes files to appear as UID 100999 inside the container.
+          # Mapping: 0:0:1000 = container 0-999 -> sub-UIDs (root for entrypoint)
+          #          1000:1000:1 = container 1000 -> host 1000 (identity map)
+          #          1001:1001:64536 = container 1001-65535 -> sub-UIDs (rest)
+          HOST_UID=$(id -u)
+          HOST_GID=$(id -g)
+          PODMAN_CMD+=(--uidmap "0:1:''${HOST_UID}")
+          PODMAN_CMD+=(--uidmap "''${HOST_UID}:0:1")
+          PODMAN_CMD+=(--uidmap "$((HOST_UID + 1)):$((HOST_UID + 1)):$((65536 - HOST_UID - 1))")
+          PODMAN_CMD+=(--gidmap "0:1:''${HOST_GID}")
+          PODMAN_CMD+=(--gidmap "''${HOST_GID}:0:1")
+          PODMAN_CMD+=(--gidmap "$((HOST_GID + 1)):$((HOST_GID + 1)):$((65536 - HOST_GID - 1))")
         elif [ -n "$REPO_URL" ]; then
           PODMAN_CMD+=(-e "REPO_URL=$REPO_URL")
         fi
