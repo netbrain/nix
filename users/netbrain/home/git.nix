@@ -298,8 +298,10 @@
       SUBJECT=""
       BODY=""
 
-      # Subject line via Lumen draft with gitmoji formatting and additional context
-      SUBJECT="$(lumen draft --context "if there are too many changes to document on a single line, then generalize; otherwise summarize all changes. Set output format to <icon-representing-type> <type>[optional scope]: <short summary of all changes>, use gitmoji for icon, one of ''${GITMOJI_LIST}" 2>/dev/null || true)"
+      # Subject line via Lumen draft with gitmoji formatting and caveman-speak rules
+      # Caveman style: drop articles, filler, hedging. Fragments OK. Technical substance exact.
+      # See https://github.com/JuliusBrussee/caveman
+      SUBJECT="$(lumen draft --context "Write commit subject in caveman-speak: drop articles, filler words (just/really/basically/simply), hedging, and pleasantries. Fragments OK. Imperative mood (add, fix, remove — not added/adds/adding). Technical substance must stay exact. No trailing period. Aim <=50 chars, hard cap 72. If too many changes for one line, generalize; otherwise summarize all changes. Output format: <gitmoji-icon> <type>(<optional-scope>): <caveman-terse summary>. Use one gitmoji from: ''${GITMOJI_LIST}. Types: feat, fix, refactor, perf, docs, test, chore, build, ci, style, revert. Emit only the subject line, no preamble, no quotes." 2>/dev/null || true)"
       # Keep only the first line and trim trailing whitespace
       SUBJECT="$(printf '%s\n' "$SUBJECT" | sed -e 's/[[:space:]]*$//' | head -n1)"
       # Comment out subject so user must explicitly opt-in
@@ -307,8 +309,9 @@
         SUBJECT="$(printf '%s\n' "$SUBJECT" | sed 's/^/# /')"
       fi
 
-      # Commit body via Lumen explain over staged diff
-      if BODY=$(lumen explain --staged --diff -q "Format your response so it fits well in the body of a git commit, do not include a heading/title" 2>/dev/null); then
+      # Commit body via Lumen explain over staged diff, in caveman-speak
+      # Pattern: [thing] [action] [reason]. [next step]. Why over what — diff shows what.
+      if BODY=$(lumen explain --staged --diff -q "Write the commit body in caveman-speak. Drop articles, filler (just/really/basically/simply/actually), hedging, and pleasantries. Fragments OK. Technical substance must stay exact — file names, symbols, numbers, flags, code unchanged. Pattern: [thing] [action] [reason]. [next step]. Prefer bullets starting with '-'. Wrap lines at 72 chars. Why over what — the diff already shows what. Skip body entirely if the subject is self-explanatory. Do not include a heading or title. Never say 'This commit', 'I', 'we', 'now', 'currently'. No AI attribution." 2>/dev/null); then
         BODY="$(printf '%s\n' "$BODY" | sed -e 's/[[:space:]]*$//')"
         # Extract only the content after the first occurrence of "Done"
         BODY_TRIMMED="$(printf '%s\n' "$BODY" | awk 'found{print} /Done/{found=1; next}')"
