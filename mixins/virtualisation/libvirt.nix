@@ -5,8 +5,6 @@
     enable = true;
     qemu = {
       package = pkgs.qemu_kvm;
-      ovmf.enable = true;
-      ovmf.packages = [ pkgs.OVMFFull.fd ];
       swtpm.enable = true;
       runAsRoot = false;
     };
@@ -20,7 +18,7 @@
   programs.dconf.enable = true;
   environment.systemPackages = with pkgs; [
     virt-manager
-    win-virtio
+    virtio-win
     virtiofsd
     looking-glass-client
     swtpm

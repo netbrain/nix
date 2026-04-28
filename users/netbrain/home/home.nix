@@ -96,15 +96,6 @@
     name = "flathub-beta"; location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
   }];
 
-  programs.wrappimage = {
-    enable = true;
-    apps.warp-terminal = {
-      url = "https://releases.warp.dev/stable/v0.2025.09.24.08.11.stable_01/Warp-x86_64.AppImage";
-      hash = "sha256-PrV7FIMkWE+5vl43uxmwWDhQZi6ynrtR+bQ2gYlpm0U=";
-      binName = "warp-terminal";
-    };
-  };
-
   services.flatpak.overrides = {
     global = {
       # Force Wayland by default

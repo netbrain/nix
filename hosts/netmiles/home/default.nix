@@ -12,7 +12,7 @@
 
   home.packages = with pkgs; [
     jetbrains.datagrip
-    jetbrains.idea-ultimate
+    jetbrains.idea
     jetbrains.goland
     jetbrains.rider
     jetbrains.webstorm

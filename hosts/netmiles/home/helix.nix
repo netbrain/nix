@@ -4,11 +4,11 @@
     extraPackages = with pkgs; [
 	    gopls 						                        # golang
       delve                                     # golang debugger
-	    nodePackages.bash-language-server		      # bash
-	    nodePackages.typescript-language-server		# typescript
+	    bash-language-server		      # bash
+	    typescript-language-server		# typescript
 	    yaml-language-server				              # yaml
 	    jdt-language-server				                # java
-	    nodePackages.vscode-json-languageserver		# json
+	    vscode-json-languageserver		# json
 	    nil						                            # nix
 	    marksman					                        # markdown
       omnisharp-roslyn                          # c-sharp

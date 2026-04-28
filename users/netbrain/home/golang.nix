@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
     go
     gopls
-    gotools
+    (lib.lowPrio gotools)
     delve
   ];
 }
