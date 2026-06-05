@@ -66,7 +66,7 @@
             exit 1
           fi
 
-          session=$(echo "$master_pw" | $BW unlock --raw 2>/dev/null) || {
+          session=$($BW unlock --passwordfile <(printf '%s' "$master_pw") --raw 2>/dev/null) || {
             echo "bw-sudo: unlock failed" >&2
             exit 1
           }
@@ -79,6 +79,27 @@
       '';
     };
 
+
+    ".local/bin/vpn-lyse" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        BW_SUDO="${config.home.homeDirectory}/.local/bin/bw-sudo"
+        NMCLI="${pkgs.networkmanager}/bin/nmcli"
+        ID="4fab525d-7b81-4421-8813-b084006afed4"
+
+        pw=$("$BW_SUDO" get password "$ID")
+        otp=$("$BW_SUDO" get totp "$ID")
+
+        # Feed the password (password immediately followed by TOTP, no
+        # separator) to nmcli via an fd — never via argv, env, or the
+        # clipboard, and without xargs/echo re-parsing the secret.
+        "$NMCLI" connection up Lyse \
+          passwd-file <(printf 'vpn.secrets.password:%s%s\n' "$pw" "$otp")
+      '';
+    };
 
     ".local/bin/rsync-resume" = {
       executable = true;

@@ -2,6 +2,8 @@
 {
   gtk = {
     enable = true;
+    # Note: gtk.gtk4.theme is set by stylix (modules/gtk/hm.nix) to
+    # config.gtk.theme; don't define it here or it conflicts.
     #theme = {
     #  package = pkgs.gruvbox-dark-gtk;
     #  name = "gruvbox-dark";

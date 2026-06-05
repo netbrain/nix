@@ -2,17 +2,14 @@
 {
   programs.git = {
     enable = true;
-    difftastic = {
-      enable = true;
-      background = "dark";
-    };
-    userName = "Kim Eik";
-    userEmail = "kim@heldig.org";
-    aliases = {
-      co = "checkout";
-      cp = "cherry-pick";
-    };
-    extraConfig = {
+    signing.format = null;
+    settings = {
+      user.name = "Kim Eik";
+      user.email = "kim@heldig.org";
+      alias = {
+        co = "checkout";
+        cp = "cherry-pick";
+      };
       #url."git@github.com:netbrain".insteadOf = [ "https://github.com/netbrain" ];
       url."git@github.com:".insteadOf = [ "gh:" "github:" ];
       push.autoSetupRemote = true;
@@ -25,6 +22,12 @@
       path = "~/.gitconfig-lyse";
       condition = "gitdir:~/dev/lyse/";
     }];
+  };
+
+  programs.difftastic = {
+    enable = true;
+    git.enable = true;
+    options.background = "dark";
   };
 
   home.file.".gitconfig-lyse" = {

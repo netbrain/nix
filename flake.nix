@@ -19,6 +19,9 @@
     lumen.url = "github:jnsahaj/lumen";
     lumen.inputs.nixpkgs.follows ="nixpkgs";
     wrappimage.url = "github:netbrain/wrappimage";
+    # Native, always-latest claude-code (auto-updated ~hourly). Intentionally NOT
+    # following our nixpkgs so the build hash matches its Cachix binary cache.
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
   outputs = inputs@{ self, ... }:

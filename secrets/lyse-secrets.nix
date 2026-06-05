@@ -5,6 +5,24 @@
     "maven/masterpass" = { };
     "lyse/maven/username" = { };
     "lyse/maven/password" = { };
+    "lyse/docker/auth" = { };
+  };
+
+  sops.templates."docker-config.json" = {
+    owner = "netbrain";
+    content = ''
+      {
+        "auths": {
+          "nexus.altibox.net:8085": {
+            "auth": "${config.sops.placeholder."lyse/docker/auth"}"
+          },
+          "nexus.altibox.net:8086": {
+            "auth": "${config.sops.placeholder."lyse/docker/auth"}"
+          }
+        }
+      }
+    '';
+    path = "/home/netbrain/.docker/config.json";
   };
 
   sops.templates."maven-settings-security.xml" = {

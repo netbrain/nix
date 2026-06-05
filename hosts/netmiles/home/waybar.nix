@@ -38,7 +38,7 @@ in
     enable = true;
     systemd = {
       enable = true;
-      target = "river-session.target";
+      targets = [ "river-session.target" ];
     };
     settings = [{
       height = 30;

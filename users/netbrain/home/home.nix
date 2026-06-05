@@ -66,23 +66,22 @@
     gitmoji-cli
     superfile
     gh
-    (inputs.npm-package.lib.${system}.npmPackage {
-      name = "claude";
-      packageName = "@anthropic-ai/claude-code";
-    })
-    (inputs.npm-package.lib.${system}.npmPackage {
+    # Native, always-latest claude-code from sadjow/claude-code-nix (patchelf'd,
+    # no nix-ld needed). Referenced directly (not via overlay) to hit its cache.
+    inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
+    (inputs.npm-package.lib.${pkgs.stdenv.hostPlatform.system}.npmPackage {
       name = "codex";
       packageName = "@openai/codex";
     })
-    (inputs.npm-package.lib.${system}.npmPackage {
+    (inputs.npm-package.lib.${pkgs.stdenv.hostPlatform.system}.npmPackage {
       name = "gemini";
       packageName = "@google/gemini-cli";
     })
-    (inputs.npm-package.lib.${system}.npmPackage {
+    (inputs.npm-package.lib.${pkgs.stdenv.hostPlatform.system}.npmPackage {
       name = "gsd";
       packageName = "get-shit-done-cc";
     })
-    (inputs.npm-package.lib.${system}.npmPackage {
+    (inputs.npm-package.lib.${pkgs.stdenv.hostPlatform.system}.npmPackage {
       name = "paul";
       packageName = "paul-framework";
     })
@@ -190,11 +189,12 @@
       rider = "inbg rider";
       webstorm = "inbg webstorm";
       idea-ultimate = "inbg idea-ultimate";
-      pwd-lyse-vpn = "echo -n $(bw-sudo get password 4fab525d-7b81-4421-8813-b084006afed4)$(bw-sudo get totp 4fab525d-7b81-4421-8813-b084006afed4) | wl-copy";
+      pwd-lyse-vpn = "printf '%s' \"$(bw-sudo get password 4fab525d-7b81-4421-8813-b084006afed4)$(bw-sudo get totp 4fab525d-7b81-4421-8813-b084006afed4)\" | wl-copy";
       pwd-lyse-otp = "bw-sudo get totp 4fab525d-7b81-4421-8813-b084006afed4 | wl-copy";
       pwd-lyse-c2a = "bw-sudo get password 3d4e37ea-adc9-4733-895f-b05f00ac02e8 | wl-copy";
       pwd-lyse-ipa = "bw-sudo get password 4fab525d-7b81-4421-8813-b084006afed4 | wl-copy";
-      vpn-lyse = "pwd-lyse-vpn && wl-paste | xargs echo vpn.secrets.password:| nmcli c up Lyse passwd-file /dev/fd/0";
+      # vpn-lyse is a wrapper script (users/netbrain/home/wrappers.nix) so the
+      # secret bypasses the clipboard and xargs re-parsing.
       har-to-k6="docker run -i --rm -w /data --entrypoint node -v \$(pwd):/data grafana/har-to-k6:latest /converter/bin/har-to-k6.js -s --";
     };
   };

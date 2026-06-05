@@ -56,7 +56,11 @@ rec {
           networking.hostName = hostname;
           nix.settings.trusted-users = [ "root" "@wheel" ];
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
-          
+
+          # Binary cache for sadjow/claude-code-nix (avoids building claude locally)
+          nix.settings.extra-substituters = [ "https://claude-code.cachix.org" ];
+          nix.settings.extra-trusted-public-keys = [ "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=" ];
+
           # Allow unfree packages
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowUnsupportedSystem = false;
