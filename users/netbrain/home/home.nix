@@ -22,6 +22,18 @@
         # Expose lumen (default package)
         lumen   = inputs.lumen.packages.${final.stdenv.hostPlatform.system}.default;
       })
+      # python-lsp-ruff 2.3.1 test suite asserts on specific ruff lint output and
+      # breaks when nixpkgs bumps ruff (test_ruff_lint.py: 'E402' mismatch).
+      # Skip its checks so helix's python LSP builds. Drop once nixpkgs fixes it.
+      (final: prev: {
+        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+          (pyfinal: pyprev: {
+            python-lsp-ruff = pyprev.python-lsp-ruff.overridePythonAttrs (_: {
+              doCheck = false;
+            });
+          })
+        ];
+      })
     ];
   };
 
