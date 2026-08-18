@@ -57,6 +57,19 @@ rec {
           nix.settings.trusted-users = [ "root" "@wheel" ];
           nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+          # Automatic store maintenance (nix store on netmiles shares a single
+          # 922G partition; without this, builds eventually fail on a full disk)
+          nix.gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 14d";
+          };
+          nix.optimise.automatic = true;
+
+          # Keep boot entries bounded (each is a no-op for the disabled loader)
+          boot.loader.systemd-boot.configurationLimit = 10;
+          boot.loader.grub.configurationLimit = 10;
+
           # Binary cache for sadjow/claude-code-nix (avoids building claude locally)
           nix.settings.extra-substituters = [ "https://claude-code.cachix.org" ];
           nix.settings.extra-trusted-public-keys = [ "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk=" ];
@@ -104,8 +117,6 @@ rec {
 
         {
           # Home Manager specific configuration for each user
-          home-manager.useGlobalPkgs = false;
-          home-manager.useUserPackages = true;
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowUnsupportedSystem = false;
           programs.home-manager.enable = true;
@@ -129,14 +140,13 @@ rec {
       };
     }) hosts);
 
-    homeConfigurations = lib.flatten (map (host: 
+    homeConfigurations = lib.mergeAttrsList (map (host:
       lib.listToAttrs (map (user: {
         name = "${user}@${host.hostname}";
         value = mkHome {
           username = user;
           system = host.system or "x86_64-linux";
           hostname = host.hostname;
-          stateVersion = "23.05";
         };
       }) host.users or [])
     ) hosts);
