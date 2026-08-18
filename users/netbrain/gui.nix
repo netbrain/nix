@@ -32,6 +32,8 @@
     ];
   };
 
+  # Kept even though the river mixin also sets this: netbox/netbfg have no
+  # other portal config, and flatpak apps rely on portals being present.
   xdg.portal = {
     enable = true;
     wlr.enable = true;

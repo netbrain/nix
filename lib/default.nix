@@ -115,6 +115,10 @@ rec {
         # Load user-specific home configuration (home.nix or home/default.nix)
         ../users/${username}/home
 
+        # Load host-specific home configuration, same as the NixOS-integrated
+        # home-manager in mkSystem does
+        ../hosts/${hostname}/home
+
         {
           # Home Manager specific configuration for each user
           nixpkgs.config.allowUnfree = true;

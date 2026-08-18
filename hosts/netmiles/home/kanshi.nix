@@ -1,7 +1,7 @@
 {
   services.kanshi = {
     enable = true;
-    systemdTarget = "river-session.target";
+    systemdTarget = "graphical-session.target";
     settings = [
     {
       profile.name = "default";

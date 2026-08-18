@@ -18,6 +18,7 @@
     ../../mixins/programs/nm-applet.nix
     ../../mixins/programs/wireshark.nix
     ../../mixins/programs/river.nix
+    ../../mixins/programs/hyprland.nix
     ../../mixins/services/greetd.nix
     ../../mixins/services/blueman.nix
     ../../mixins/services/fwupd.nix

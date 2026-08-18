@@ -179,10 +179,7 @@
       riverctl map normal Super X spawn "swaylock --color 3c3836 -F -f"
 
       river-bsp-layout --inner-gap 6 --outer-gap 6 &
-      
-      # Prewarm mnu-bw service at session start
-      riverctl spawn "mnu-bw serve"
-      
+
       # Browser
       # riverctl map normal Super W spawn "firefox && riverctl set-focused-tags $((2#1))"
 
@@ -211,9 +208,8 @@
       # riverctl rule-add -title "Messenger" tags $((2#100))
       # riverctl spawn "chromium --profile-directory=Default1 --app-id=bbdeiblfgdokhlblpgeaokenkfknecgl"
 
-      # Applets
-      riverctl spawn "pasystray"
-      riverctl spawn "blueman-applet"
+      # Applets and mnu-bw serve are systemd user services now (session.nix),
+      # started via graphical-session.target in both river and hyprland
 
       # Float metamask
       riverctl rule-add -title _crx_nkbihfbeogaeaoehlefnkodbefgpgknn float

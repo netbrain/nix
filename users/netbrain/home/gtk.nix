@@ -8,10 +8,12 @@
     #  package = pkgs.gruvbox-dark-gtk;
     #  name = "gruvbox-dark";
     #};
-#    iconTheme = {
-#      package = pkgs.gruvbox-dark-icons-gtk;
-#      name = "gruvbox-dark";
-#    };
+    # Papirus-based, so app icons resolve (waybar hyprland/window icon,
+    # launchers); gruvbox-dark-icons-gtk only covers folders/places
+    iconTheme = {
+      package = pkgs.gruvbox-plus-icons;
+      name = "Gruvbox-Plus-Dark";
+    };
     #gtk2.extraConfig = ''
     #  gtk-cursor-theme-size = 16
     #  gtk-cursor-theme-name = "capitaine-cursors"

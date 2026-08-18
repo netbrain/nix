@@ -2,6 +2,9 @@
 {
   imports = [
     ./river.nix
+    ./hyprland.nix
+    ./hyprlock.nix
+    ./session.nix
     ./kanshi.nix
     ./pwd-lyse-maven-update.nix
     ./waybar.nix
