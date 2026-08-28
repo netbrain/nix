@@ -45,6 +45,7 @@
 
   home.packages = with pkgs; [
     sops
+    age
     tree
     nmap
     wget
