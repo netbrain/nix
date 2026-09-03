@@ -234,6 +234,10 @@
 
   # Terminal file manager
   programs.lf.enable = true;
+  programs.yazi = {
+    enable = true;
+    enableBashIntegration = true;
+  };
 
   systemd.user.startServices = "sd-switch";
 }
