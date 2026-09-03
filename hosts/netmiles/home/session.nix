@@ -37,6 +37,23 @@
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
+  # Wayland clipboards die with their owning client (e.g. satty --early-exit,
+  # closing a browser after copy); this re-owns the selection so paste keeps
+  # working. Regular clipboard only: persisting the primary selection would
+  # re-copy every text highlight. Explicit clears still clear.
+  systemd.user.services.wl-clip-persist = {
+    Unit = {
+      Description = "Keep clipboard alive after the owning client exits";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular";
+      Restart = "on-failure";
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   systemd.user.services.mnu-bw = {
     Unit = {
       Description = "mnu-bw menu server";

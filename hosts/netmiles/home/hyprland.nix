@@ -167,13 +167,16 @@ in
         (bind "SUPER + SHIFT + O" ''hl.dsp.window.move({ workspace = "special:scratch", follow = false })'')
 
         # Screenshots: Print annotates in satty, Shift+Print copies raw
-        (bind "Print" ''hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | satty --filename - --output-filename \"$HOME/Pictures/screenshots/%Y-%m-%d_%H-%M-%S.png\" --early-exit")'')
+        # copy-command wl-copy: satty's own GDK clipboard dies with the
+        # process under --early-exit; wl-copy forks and keeps serving it
+        (bind "Print" ''hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | satty --filename - --output-filename \"$HOME/Pictures/screenshots/%Y-%m-%d_%H-%M-%S.png\" --early-exit --copy-command wl-copy")'')
         (bind "SHIFT + Print" ''hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | wl-copy")'')
 
         # Colorpicker / clipboard history / lock
         (bind "SUPER + C" ''hl.dsp.exec_cmd("hyprpicker -n -r | wl-copy")'')
         (bind "SUPER + V" ''hl.dsp.exec_cmd("cliphist list | tofi --prompt-text clip: | cliphist decode | wl-copy")'')
-        (bind "SUPER + X" ''hl.dsp.exec_cmd("hyprlock")'')
+        # Route through hypridle's lock_cmd (pidof guard + crash retry loop)
+        (bind "SUPER + X" ''hl.dsp.exec_cmd("loginctl lock-session")'')
       ]
       # Workspaces 1-6 (river tags; Shift moves without following)
       ++ lib.concatLists (lib.genList (i:
