@@ -90,6 +90,11 @@
         NMCLI="${pkgs.networkmanager}/bin/nmcli"
         ID="4fab525d-7b81-4421-8813-b084006afed4"
 
+        # Reconnect cleanly if the VPN is already up
+        if "$NMCLI" -t -f NAME connection show --active | grep -qx Lyse; then
+          "$NMCLI" connection down Lyse
+        fi
+
         pw=$("$BW_SUDO" get password "$ID")
         otp=$("$BW_SUDO" get totp "$ID")
 
