@@ -9,6 +9,19 @@
   services.pipewire = {
     enable = true;
     pulse.enable = true;
+    # Prefer the USB condenser mic over other capture devices when plugged in
+    # (everything ships with priority.session 2600, so ties are arbitrary).
+    wireplumber.extraConfig."51-mic-priority" = {
+      "monitor.alsa.rules" = [
+        {
+          matches = [{ "node.name" = "~alsa_input.usb-DCMT_Technology_USB_Condenser_Microphone.*"; }];
+          actions.update-props = {
+            "priority.session" = 3000;
+            "priority.driver" = 3000;
+          };
+        }
+      ];
+    };
   };
 
   fonts = {
