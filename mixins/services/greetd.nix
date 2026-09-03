@@ -3,11 +3,13 @@
   services.greetd = {
     enable = true;
     settings = {
-      # First VT activation after boot goes straight into river (no login
+      # First VT activation after boot goes straight into hyprland (no login
       # friction). Logging out lands in tuigreet, where any registered
       # wayland session (river, hyprland, ...) can be picked.
+      # The wrapper path (not the store path) keeps the cap_sys_nice
+      # capability that programs.hyprland sets up via security.wrappers.
       initial_session = {
-        command = "${pkgs.river-classic}/bin/river";
+        command = "${config.security.wrapperDir}/Hyprland";
         user = "netbrain";
       };
       default_session = {
