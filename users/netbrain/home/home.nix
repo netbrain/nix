@@ -62,6 +62,7 @@
     iotop
     tailscale
     tig
+    sox
     bitwarden-cli
     keyutils
     mnu
