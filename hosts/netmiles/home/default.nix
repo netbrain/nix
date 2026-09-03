@@ -23,5 +23,6 @@
     spotify
     pavucontrol
     wdisplays
+    localsend
   ];
 }
