@@ -1,7 +1,7 @@
-{	
+{
   #systemd
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=60s
-    DefaultTimeoutStartSec=60s
-  '';
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "60s";
+    DefaultTimeoutStartSec = "60s";
+  };
 }

@@ -1,6 +1,11 @@
 
 { pkgs, ... }:
 
+let
+  # Kiosk session loop: riced rofi chooser -> launch rider(s)/media -> re-show
+  # the chooser when the launched app exits (never leaves an empty screen).
+  kioskSession = pkgs.writeShellScript "zwift-kiosk" (builtins.readFile ./kiosk-session.sh);
+in
 {
   services.xserver = {
     enable = true;
@@ -9,20 +14,31 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    xorg.xorgserver
-    xorg.xf86inputevdev
-    xorg.xhost
-    xorg.xrefresh
+    xorg-server
+    xf86-input-evdev
+    xhost
+    xrefresh
     openbox
-    stremio
+    rofi
+    dunst
+    libnotify
+    stremio-linux-shell
     wmctrl
     spotify
     firefox
   ];
 
-  # Environment variables for Zwift
-  environment.variables = {
-    ZWIFT_FG = "1";
+  # Emoji rendering for the rofi/dunst kiosk UI (hearts in the greeting).
+  fonts.packages = [ pkgs.noto-fonts-color-emoji ];
+
+  programs.zwift = {
+    # Run zwift attached so the container blocks the launching xterm until the
+    # game is closed; the kiosk loop waits on that to re-show the chooser.
+    zwiftFg = true;
+    # Weak GPU: replace all graphics profiles with ~/.config/zwift/graphics.txt
+    # (managed by home-manager) and force 720p game resolution
+    zwiftOverrideGraphics = true;
+    zwiftOverrideResolution = "1280x720";
   };
 
   services.xserver.config = ''
@@ -31,7 +47,7 @@
       Screen      0  "Screen0" 0 0
       Option         "Xinerama" "0"
     EndSection
-    
+
     Section "Monitor"
       # HorizSync source: edid, VertRefresh source: edid
       Identifier     "Monitor0"
@@ -69,10 +85,8 @@
   # Writing the .xinitrc file
   environment.etc."X11/xinit/xinitrc".text = ''
     #!/bin/sh
-    # Start the window manager (Openbox)
+    # Start the window manager (openbox); it runs the whole session.
     openbox &
-
-    # Store Openbox's process ID separately
     OPENBOX_PID=$!
 
     # Prevent the screen from turning off
@@ -83,43 +97,17 @@
     # Allow local clients to connect to X server
     xhost +local:
 
-    # Start Zwift (run in the background)
-    xterm -bg black -fg white -e 'zwift --replace' &
+    # Notification daemon (for the greeting popup)
+    dunst &
 
-    # Start stremio
-    stremio &
-    
-    # Retry Bluetooth connection setup and connection in the background
-    (
-      while true; do
-        bluetoothctl power on
-        bluetoothctl agent on
-        bluetoothctl pair 41:42:C4:33:F3:8A
-        bluetoothctl trust 41:42:C4:33:F3:8A
-        if bluetoothctl connect 41:42:C4:33:F3:8A; then
-          echo "Bluetooth connected successfully."
-          break
-        else
-          echo "Bluetooth connection failed, retrying in 5 seconds..."
-          sleep 5
-        fi
-      done
-    ) &
+    # (Bluetooth headset reconnection is handled by the bt-headset-autoconnect
+    # systemd service, independent of this X session.)
 
-    sleep 3 && xrefresh 
+    # Rider/media chooser loop
+    ${kioskSession} &
 
-    # Position windows
-    STREMIO_WINDOW=$(wmctrl -l | grep -i stremio | cut -f 1 -d ' ')
-    wmctrl -ir $STREMIO_WINDOW -e 0,0,1080,-1,-1
-    wmctrl -ir $STREMIO_WINDOW -b add,maximized_vert,maximized_horz
-
-    ZWIFT_WINDOW=$(wmctrl -l | grep Zwift | cut -f 1 -d ' ')
-    wmctrl -ir $ZWIFT_WINDOW -b add,maximized_vert, maximized_horz
-    
-    # Wait for Openbox to finish
+    # Wait for openbox to finish, then return to the login manager
     wait $OPENBOX_PID
-
-    # Clean exit and return to login manager (greetd, for example)
     logout
   '';
 

@@ -1,0 +1,45 @@
+[global]
+    monitor = 0
+    follow = none
+    # Kiosk: nobody touches the mouse while cycling, so never treat the session
+    # as idle. This keeps the timeout counting down so greetings auto-dismiss.
+    idle_threshold = 0
+    origin = top-center
+    offset = 0x60
+    width = 700
+    height = (0, 400)
+    notification_limit = 3
+    progress_bar = false
+    font = Fira Code 18
+    markup = full
+    format = "<b>%s</b>\n\n%b"
+    alignment = center
+    vertical_alignment = center
+    word_wrap = yes
+    line_height = 4
+    padding = 28
+    horizontal_padding = 32
+    frame_width = 3
+    corner_radius = 16
+    background = "#1e1e2e"
+    foreground = "#f5e0dc"
+    frame_color = "#f38ba8"
+    separator_color = frame
+
+[urgency_low]
+    background = "#1e1e2e"
+    foreground = "#f5e0dc"
+    frame_color = "#f38ba8"
+    timeout = 10
+
+[urgency_normal]
+    background = "#1e1e2e"
+    foreground = "#f5e0dc"
+    frame_color = "#f38ba8"
+    timeout = 15
+
+[urgency_critical]
+    background = "#1e1e2e"
+    foreground = "#f5e0dc"
+    frame_color = "#f38ba8"
+    timeout = 20

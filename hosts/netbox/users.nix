@@ -2,16 +2,10 @@
 {
   users.users = {
     netbrain = {
-      extraGroups = [ 
-        "tty" 
-      ];
-      hashedPassword = lib.mkForce ""; # passwordless
-    };
-    elin = {
-      extraGroups = [ 
+      extraGroups = [
         "tty"
       ];
-      hashedPassword = lib.mkForce ""; #passwordless
+      hashedPassword = lib.mkForce ""; # passwordless
     };
   };
 }

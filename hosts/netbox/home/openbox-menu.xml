@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+  <menu id="root-menu" label="Kiosk">
+    <item label="NRK TV">
+      <action name="Execute"><command>firefox https://tv.nrk.no</command></action>
+    </item>
+    <item label="Firefox">
+      <action name="Execute"><command>firefox</command></action>
+    </item>
+    <item label="Stremio">
+      <action name="Execute"><command>stremio</command></action>
+    </item>
+    <item label="Spotify">
+      <action name="Execute"><command>spotify</command></action>
+    </item>
+    <separator/>
+    <item label="Terminal">
+      <action name="Execute"><command>xterm</command></action>
+    </item>
+    <separator/>
+    <item label="Start openbox på nytt">
+      <action name="Restart"/>
+    </item>
+    <item label="Avslutt økt">
+      <action name="Exit"><prompt>yes</prompt></action>
+    </item>
+  </menu>
+</openbox_menu>

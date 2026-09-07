@@ -38,7 +38,7 @@
         }
         {
           hostname = "netbox";
-          users = [ "netbrain" "elin" ];
+          users = [ "netbrain" ];
         }
         {
           hostname = "netbfg";

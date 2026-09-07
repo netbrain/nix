@@ -1,7 +1,12 @@
-{ pkgs, inputs, config, ... }:
+{ pkgs, inputs, config, lib, hostname, ... }:
 
+let
+  # netbox is an auto-login Zwift kiosk (blank password); it must not hold the
+  # master age key that decrypts every secret. Exclude all sops secrets there.
+  enableSecrets = hostname != "netbox";
+in
 {
-  imports = [
+  imports = lib.optionals enableSecrets [
     ../../../secrets/config.nix
     ../../../secrets/github-secrets.nix
     ../../../secrets/ssh-secrets.nix
@@ -123,28 +128,30 @@
 
   services.flatpak.update.onActivation = true;
 
-  sops.secrets = {
-    "openai/key" = {};
-    "gemini/key" = {};
-    "anthropic/key" = {};
-  };
+  sops = lib.mkIf enableSecrets {
+    secrets = {
+      "openai/key" = {};
+      "gemini/key" = {};
+      "anthropic/key" = {};
+    };
 
-  sops.templates."secretSessionVariables".content = ''
-   export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
-   #export ANTHROPIC_API_KEY='${config.sops.placeholder."anthropic/key"}'
-   #export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
-  '';
-
-  # Lumen configuration file with OpenAI provider and API key from sops
-  sops.templates."lumen.config.json" = {
-    path = "/home/netbrain/.config/lumen/lumen.config.json";
-    content = ''
-      {
-        "provider": "openai",
-        "api_key": "${config.sops.placeholder."openai/key"}",
-        "model": "gpt-4o-mini"
-      }
+    templates."secretSessionVariables".content = ''
+     export OPENAI_API_KEY='${config.sops.placeholder."openai/key"}'
+     #export ANTHROPIC_API_KEY='${config.sops.placeholder."anthropic/key"}'
+     #export GEMINI_API_KEY='${config.sops.placeholder."gemini/key"}'
     '';
+
+    # Lumen configuration file with OpenAI provider and API key from sops
+    templates."lumen.config.json" = {
+      path = "/home/netbrain/.config/lumen/lumen.config.json";
+      content = ''
+        {
+          "provider": "openai",
+          "api_key": "${config.sops.placeholder."openai/key"}",
+          "model": "gpt-4o-mini"
+        }
+      '';
+    };
   };
 
 
@@ -160,14 +167,15 @@
     enable = true;
     enableCompletion = true;
     bashrcExtra = ''
-
+${lib.optionalString enableSecrets ''
     # Source sops secrets if the file exists
     # The actual path to the template file is available via config.sops.templates."secretSessionVariables".path
     sops_vars_file="${config.sops.templates."secretSessionVariables".path}"
     if [ -f "$sops_vars_file" ]; then
       source "$sops_vars_file"
     fi
-       
+''}
+
     inbg(){
       nohup "$@" &>/dev/null & disown
     }
