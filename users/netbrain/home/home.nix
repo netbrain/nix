@@ -26,6 +26,8 @@ in
         mnu-drun= inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-drun";
         # Expose lumen (default package)
         lumen   = inputs.lumen.packages.${final.stdenv.hostPlatform.system}.default;
+        # harness-remote er ikke publisert på npm (kun GitHub), så den pakkes lokalt.
+        harness-remote = final.callPackage ../../../pkgs/harness-remote.nix { };
         # hermes-web-ui (Ekko Studio) trenger node >= 23 og egen build-toolchain,
         # som npm-package-flaket ikke gir. Pakkes derfor lokalt.
         hermes-web-ui = final.callPackage ../../../pkgs/hermes-web-ui.nix { };
@@ -90,6 +92,7 @@ in
     gh
     opencode
     hermes-web-ui
+    harness-remote
     # Native, always-latest claude-code from sadjow/claude-code-nix (patchelf'd,
     # no nix-ld needed). Referenced directly (not via overlay) to hit its cache.
     inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
