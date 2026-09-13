@@ -26,6 +26,9 @@ in
         mnu-drun= inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-drun";
         # Expose lumen (default package)
         lumen   = inputs.lumen.packages.${final.stdenv.hostPlatform.system}.default;
+        # hermes-web-ui (Ekko Studio) trenger node >= 23 og egen build-toolchain,
+        # som npm-package-flaket ikke gir. Pakkes derfor lokalt.
+        hermes-web-ui = final.callPackage ../../../pkgs/hermes-web-ui.nix { };
       })
       # python-lsp-ruff 2.3.1 test suite asserts on specific ruff lint output and
       # breaks when nixpkgs bumps ruff (test_ruff_lint.py: 'E402' mismatch).
@@ -86,6 +89,7 @@ in
     superfile
     gh
     opencode
+    hermes-web-ui
     # Native, always-latest claude-code from sadjow/claude-code-nix (patchelf'd,
     # no nix-ld needed). Referenced directly (not via overlay) to hit its cache.
     inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
