@@ -26,6 +26,8 @@ in
         mnu-drun= inputs.mnu.packages.${final.stdenv.hostPlatform.system}."mnu-drun";
         # Expose lumen (default package)
         lumen   = inputs.lumen.packages.${final.stdenv.hostPlatform.system}.default;
+        # openportal is npm-only (no flake), so it is packaged locally.
+        openportal = final.callPackage ../../../pkgs/openportal.nix { };
       })
       # python-lsp-ruff 2.3.1 test suite asserts on specific ruff lint output and
       # breaks when nixpkgs bumps ruff (test_ruff_lint.py: 'E402' mismatch).
@@ -72,6 +74,7 @@ in
     keyutils
     mnu
     lumen
+    openportal
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
     #}))
