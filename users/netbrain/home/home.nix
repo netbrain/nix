@@ -88,6 +88,7 @@ in
     gitmoji-cli
     superfile
     gh
+    opencode
     # Native, always-latest claude-code from sadjow/claude-code-nix (patchelf'd,
     # no nix-ld needed). Referenced directly (not via overlay) to hit its cache.
     inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.default
