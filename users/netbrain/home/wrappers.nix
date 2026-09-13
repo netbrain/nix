@@ -230,5 +230,105 @@
         exec "''${PODMAN_CMD[@]}"
       '';
     };
+
+    # open-design (OpenDesign): lokal design-app som lar kodeagenter produsere
+    # HTML/PDF/PPTX/MP4. Kjøres som container, ikke som nix-pakke: upstream
+    # publiserer ingen Linux-binær, og kilden er en pnpm 10.33-monorepo med
+    # seks workspaces, Next.js-bygg, better-sqlite3 og Electron.
+    #
+    # Flaggene speiler deploy/docker-compose.yml fra upstream. Vi bruker ikke
+    # deres docker-compose.linux.yml: den bind-monterer /lib/x86_64-linux-gnu,
+    # som ikke finnes på NixOS. Prisen er at host-installerte agent-CLI-er
+    # (claude, codex, opencode) ikke er synlige inne i containeren, så
+    # OpenDesign kjører på egne API-nøkler i stedet.
+    #
+    # Telemetri rapporterte "effectiveMode: off, blockedReason: missing_sink"
+    # i denne oppsettformen, altså ingen aktiv sink.
+    ".local/bin/open-design" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        # Bevisst PATH-oppslag og ikke ${pkgs.podman}: rootless podman virker bare
+        # med binæren virtualisation.podman setter opp (setuid newuidmap/newgidmap,
+        # storage.conf, policy.json). pkgs.podman er en annen store-path enn
+        # systemets og ville i tillegg duplisert podman i closure.
+        # Samme grep som claude-container-wrapperen over.
+        PODMAN="podman"
+        IMAGE="''${OPEN_DESIGN_IMAGE:-ghcr.io/nexu-io/od:latest}"
+        PORT="''${OPEN_DESIGN_PORT:-7456}"
+        NAME="open-design"
+        TOKEN_FILE="$HOME/.config/open-design/token"
+
+        # API-tokenet ligger utenfor sops fordi det bare beskytter en
+        # loopback-bundet lokal tjeneste og genereres på maskinen.
+        ensure_token() {
+          if [ ! -s "$TOKEN_FILE" ]; then
+            mkdir -p "$(dirname "$TOKEN_FILE")"
+            ${pkgs.openssl}/bin/openssl rand -hex 32 > "$TOKEN_FILE"
+            chmod 600 "$TOKEN_FILE"
+            echo "Genererte nytt API-token i $TOKEN_FILE" >&2
+          fi
+          cat "$TOKEN_FILE"
+        }
+
+        start() {
+          local token
+          token=$(ensure_token)
+
+          if $PODMAN container exists "$NAME" 2>/dev/null; then
+            $PODMAN start "$NAME" >/dev/null
+          else
+            $PODMAN volume exists open_design_data 2>/dev/null \
+              || $PODMAN volume create open_design_data >/dev/null
+
+            # Ingen --restart-policy: rootless podman håndhever den via
+            # podman-restart.service, som ikke er aktivert her, og Linger=no
+            # stopper uansett brukerens containere ved utlogging. Kjør
+            # "open-design start" på nytt etter reboot.
+            # --read-only, --pids-limit og no-new-privileges kommer fra
+            # upstreams compose-fil. Porten publiseres kun på loopback:
+            # OD_BIND_HOST=0.0.0.0 gjelder inne i containeren.
+            $PODMAN run -d \
+              --name "$NAME" \
+              -p "127.0.0.1:''${PORT}:7456" \
+              -e NODE_ENV=production \
+              -e NODE_OPTIONS=--max-old-space-size=192 \
+              -e OD_BIND_HOST=0.0.0.0 \
+              -e OD_PORT=7456 \
+              -e "OD_WEB_PORT=''${PORT}" \
+              -e "OD_API_TOKEN=''${token}" \
+              -v open_design_data:/app/.od \
+              --read-only \
+              --tmpfs /tmp \
+              --security-opt no-new-privileges:true \
+              -m 384m \
+              --pids-limit 256 \
+              "$IMAGE" >/dev/null
+          fi
+
+          echo "open-design kjører på http://127.0.0.1:''${PORT}"
+          echo "Logg inn som brukernavn 'open-design' med tokenet i $TOKEN_FILE"
+        }
+
+        case "''${1:-start}" in
+          start)  start ;;
+          stop)   $PODMAN stop "$NAME" ;;
+          status) $PODMAN ps --filter "name=$NAME" ;;
+          logs)   shift; $PODMAN logs "''${@:---tail=50}" "$NAME" ;;
+          token)  ensure_token ;;
+          update)
+            $PODMAN pull "$IMAGE"
+            $PODMAN rm -f "$NAME" 2>/dev/null || true
+            start
+            ;;
+          *)
+            echo "Bruk: open-design [start|stop|status|logs|token|update]" >&2
+            exit 1
+            ;;
+        esac
+      '';
+    };
   };
 }
