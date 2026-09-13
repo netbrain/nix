@@ -12,7 +12,13 @@
   # Enable management of chromium policies.
   programs.chromium.enable = true;
 
-  # # Extensions to install.
+  # Extensions to install. Force-installed via ExtensionInstallForcelist policy,
+  # so they can't be removed from chrome://extensions — remove them here instead.
+  programs.chromium.extensions = [
+    "fcoeoabgfenejglbffodgkkbkcdhcgfn" # Claude in Chrome (claude --chrome)
+  ];
+
+  # # Extensions previously used.
   # programs.chromium.extensions = [
   #   "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
   #   "nkbihfbeogaeaoehlefnkodbefgpgknn" # Metamask
