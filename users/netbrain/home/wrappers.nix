@@ -313,7 +313,8 @@
               -v open_design_data:/app/.od \
               -v /nix/store:/nix/store:ro \
               -v "/etc/profiles/per-user/$(id -un)/bin:/mnt/host-bin:ro" \
-              -e "PATH=/mnt/host-bin:/usr/local/bin:/usr/bin:/bin" \
+              -v "$HOME/.local/share/open-design/shim:/mnt/host-shim:ro" \
+              -e "PATH=/mnt/host-shim:/mnt/host-bin:/usr/local/bin:/usr/bin:/bin" \
               -e HOME=/home/open-design \
               --read-only \
               --tmpfs /tmp \
@@ -344,6 +345,64 @@
             exit 1
             ;;
         esac
+      '';
+    };
+
+    # Shim som bygger bro over en navnekollisjon mellom OpenDesign 0.22.2 og
+    # opencode 1.18.9: OpenDesign ser etter flagget
+    # --dangerously-skip-permissions, mens opencode har omdøpt det til --auto.
+    #
+    # Uten broen kjører OpenDesign opencode uten permission-bypass. opencode
+    # spør da om tillatelse for verktøykall, ingen kan svare i en headless
+    # container, kallet avslås ("The user rejected permission to use this
+    # specific tool call") og agenten returnerer tomt: "No output produced".
+    #
+    # Mekanikken hos dem (runtimes/detection.js + opencode-permissions.js): de
+    # kjører "opencode run --help", slår sammen stdout og stderr og gjør
+    # help.includes("--dangerously-skip-permissions"). Er strengen der, sendes
+    # flagget ved neste kjøring. Shimen svarer derfor på proben og oversetter
+    # flagget til --auto når det faktisk kommer.
+    #
+    # Monteres først i containerens PATH av open-design-wrapperen over. Kjøres
+    # av Alpine sitt busybox-sh, så den må holde seg til POSIX.
+    #
+    # Fjern denne når OpenDesign kjenner --auto. Sjekk med:
+    #   podman exec open-design grep -r dangerously-skip-permissions \
+    #     /app/apps/daemon/dist/runtimes/
+    ".local/share/open-design/shim/opencode" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        REAL=/mnt/host-bin/opencode
+
+        # Svar på capability-proben: kjør ekte --help, legg så til linjen
+        # OpenDesign leter etter. opencode skriver sin hjelp til stderr, og de
+        # slår sammen begge strømmer, så 2>&1 er riktig her.
+        if [ "$1" = "run" ]; then
+          for a in "$@"; do
+            if [ "$a" = "--help" ]; then
+              "$REAL" run --help 2>&1
+              echo "      --dangerously-skip-permissions   (shim: oversettes til --auto)"
+              exit 0
+            fi
+          done
+        fi
+
+        # Oversett det gamle flaggnavnet. Roterer argumentlisten for å bevare
+        # quoting uten arrays, som POSIX sh ikke har.
+        n=$#
+        i=0
+        while [ $i -lt $n ]; do
+          a="$1"
+          shift
+          case "$a" in
+            --dangerously-skip-permissions) set -- "$@" --auto ;;
+            *) set -- "$@" "$a" ;;
+          esac
+          i=$((i + 1))
+        done
+
+        exec "$REAL" "$@"
       '';
     };
   };
