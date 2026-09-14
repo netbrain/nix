@@ -238,9 +238,20 @@
     #
     # Flaggene speiler deploy/docker-compose.yml fra upstream. Vi bruker ikke
     # deres docker-compose.linux.yml: den bind-monterer /lib/x86_64-linux-gnu,
-    # som ikke finnes på NixOS. Prisen er at host-installerte agent-CLI-er
-    # (claude, codex, opencode) ikke er synlige inne i containeren, så
-    # OpenDesign kjører på egne API-nøkler i stedet.
+    # som ikke finnes på NixOS.
+    #
+    # Host-CLI-ene gjøres i stedet synlige ved å montere /nix/store read-only
+    # sammen med brukerprofilens bin/. Nix-binærer har absolutt RPATH og
+    # ELF-interpreter inne i storet, så de kjører i dette Alpine-imaget uten
+    # glibc-mountene upstream trenger på Debian. Verifisert: claude, codex og
+    # opencode rapporteres alle "available" av /api/agents.
+    #
+    # ~/.claude monteres bevisst IKKE. Upstream gjør det, men det ville gitt en
+    # tredjepartscontainer lesetilgang til Claude-credentials. Legg det til selv
+    # hvis du vil at claude skal være autentisert inne i containeren.
+    #
+    # Minnegrensen er hevet fra upstreams 384m til 1g: agent-deteksjon toppet
+    # 443 MB og ble OOM-drept (exit 137) på lavere grenser.
     #
     # Telemetri rapporterte "effectiveMode: off, blockedReason: missing_sink"
     # i denne oppsettformen, altså ingen aktiv sink.
@@ -294,16 +305,21 @@
               --name "$NAME" \
               -p "127.0.0.1:''${PORT}:7456" \
               -e NODE_ENV=production \
-              -e NODE_OPTIONS=--max-old-space-size=192 \
+              -e NODE_OPTIONS=--max-old-space-size=768 \
               -e OD_BIND_HOST=0.0.0.0 \
               -e OD_PORT=7456 \
               -e "OD_WEB_PORT=''${PORT}" \
               -e "OD_API_TOKEN=''${token}" \
               -v open_design_data:/app/.od \
+              -v /nix/store:/nix/store:ro \
+              -v "/etc/profiles/per-user/$(id -un)/bin:/mnt/host-bin:ro" \
+              -e "PATH=/mnt/host-bin:/usr/local/bin:/usr/bin:/bin" \
+              -e HOME=/home/open-design \
               --read-only \
               --tmpfs /tmp \
+              --mount type=tmpfs,destination=/home/open-design,tmpfs-mode=1777 \
               --security-opt no-new-privileges:true \
-              -m 384m \
+              -m 1g \
               --pids-limit 256 \
               "$IMAGE" >/dev/null
           fi
