@@ -12,6 +12,7 @@
       };
       #url."git@github.com:netbrain".insteadOf = [ "https://github.com/netbrain" ];
       url."git@github.com:".insteadOf = [ "gh:" "github:" ];
+      url."ssh://git@github.com/".insteadOf = [ "https://github.com/" ];
       push.autoSetupRemote = true;
       core.editor = "hx";
       core.hooksPath = "${config.home.homeDirectory}/.config/git/hooks";
@@ -36,8 +37,11 @@
       name = Kim Eik
       email = kim.eik@lyse.no
 
-      [url "git@github.com-lyse:"]
-      insteadOf = https://github.com/
+      [url "git@github.com-lyse:Lyse-AS/"]
+      insteadOf = https://github.com/Lyse-AS/
+
+      [url "git@github.com-lyse:kim-eik_lyse/"]
+      insteadOf = https://github.com/kim-eik_lyse/
 
       [url "git@github.com-lyse:"]
       insteadOf = git@github.com:
