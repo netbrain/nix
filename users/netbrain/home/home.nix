@@ -77,6 +77,7 @@ in
     keyutils
     mnu
     lumen
+    libreoffice-fresh
     #(bitwarden-cli.overrideAttrs (oldAttrs: rec {
     #  dontCheckForBrokenSymlinks = true;
     #}))
